@@ -8,9 +8,16 @@
 
 /* Begin PBXBuildFile section */
 		0C3618D72B3F58F90063C700 /* .gitignore in Resources */ = {isa = PBXBuildFile; fileRef = 0C3618D62B3F58F90063C700 /* .gitignore */; };
+		0C3618DA2B3F8DA30063C700 /* SocketIO in Frameworks */ = {isa = PBXBuildFile; productRef = 0C3618D92B3F8DA30063C700 /* SocketIO */; };
+		0C3618DC2B3F8DE80063C700 /* DrawingWebSocketManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C3618DB2B3F8DE80063C700 /* DrawingWebSocketManager.swift */; };
+		0C8B1F802B3FBFEA00D250CB /* GameCodeDisplay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C8B1F7F2B3FBFEA00D250CB /* GameCodeDisplay.swift */; };
+		0C8B1F832B3FE6E100D250CB /* GlobalStateManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C8B1F822B3FE6E100D250CB /* GlobalStateManager.swift */; };
 		0CC27AE92B3D260400F88012 /* OutlineButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CC27AE82B3D260400F88012 /* OutlineButtonStyle.swift */; };
 		0CC27AEB2B3D2F6900F88012 /* NewGameSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CC27AEA2B3D2F6900F88012 /* NewGameSheet.swift */; };
 		0CC27AED2B3DF92A00F88012 /* JoinGameSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CC27AEC2B3DF92A00F88012 /* JoinGameSheet.swift */; };
+		0CCA6FF32B420C850013F21C /* CommunicationWebSocketManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CCA6FF22B420C850013F21C /* CommunicationWebSocketManager.swift */; };
+		0CCA6FF52B43A7D40013F21C /* JoinGamePlayers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CCA6FF42B43A7D40013F21C /* JoinGamePlayers.swift */; };
+		0CCA6FF72B43C6EB0013F21C /* EnvironmentError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CCA6FF62B43C6EB0013F21C /* EnvironmentError.swift */; };
 		0CE5C4EC2B3804C6009B4F08 /* fake_artist_iosApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CE5C4EB2B3804C6009B4F08 /* fake_artist_iosApp.swift */; };
 		0CE5C4EE2B3804C6009B4F08 /* Home.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CE5C4ED2B3804C6009B4F08 /* Home.swift */; };
 		0CE5C4F02B3804C7009B4F08 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0CE5C4EF2B3804C7009B4F08 /* Assets.xcassets */; };
@@ -39,10 +46,17 @@
 
 /* Begin PBXFileReference section */
 		0C3618D62B3F58F90063C700 /* .gitignore */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
+		0C3618DB2B3F8DE80063C700 /* DrawingWebSocketManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrawingWebSocketManager.swift; sourceTree = "<group>"; };
+		0C8B1F7F2B3FBFEA00D250CB /* GameCodeDisplay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameCodeDisplay.swift; sourceTree = "<group>"; };
+		0C8B1F812B3FD6EE00D250CB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		0C8B1F822B3FE6E100D250CB /* GlobalStateManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlobalStateManager.swift; sourceTree = "<group>"; };
 		0CC27AE82B3D260400F88012 /* OutlineButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OutlineButtonStyle.swift; sourceTree = "<group>"; };
 		0CC27AEA2B3D2F6900F88012 /* NewGameSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewGameSheet.swift; sourceTree = "<group>"; };
 		0CC27AEC2B3DF92A00F88012 /* JoinGameSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JoinGameSheet.swift; sourceTree = "<group>"; };
-		0CE5C4E82B3804C6009B4F08 /* Fake Artist Online.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Fake Artist Online.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		0CCA6FF22B420C850013F21C /* CommunicationWebSocketManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunicationWebSocketManager.swift; sourceTree = "<group>"; };
+		0CCA6FF42B43A7D40013F21C /* JoinGamePlayers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JoinGamePlayers.swift; sourceTree = "<group>"; };
+		0CCA6FF62B43C6EB0013F21C /* EnvironmentError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnvironmentError.swift; sourceTree = "<group>"; };
+		0CE5C4E82B3804C6009B4F08 /* Fake Artist.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Fake Artist.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		0CE5C4EB2B3804C6009B4F08 /* fake_artist_iosApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = fake_artist_iosApp.swift; sourceTree = "<group>"; };
 		0CE5C4ED2B3804C6009B4F08 /* Home.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Home.swift; sourceTree = "<group>"; };
 		0CE5C4EF2B3804C7009B4F08 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -59,6 +73,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0C3618DA2B3F8DA30063C700 /* SocketIO in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -85,6 +100,9 @@
 				0CC27AE82B3D260400F88012 /* OutlineButtonStyle.swift */,
 				0CC27AEA2B3D2F6900F88012 /* NewGameSheet.swift */,
 				0CC27AEC2B3DF92A00F88012 /* JoinGameSheet.swift */,
+				0C8B1F7F2B3FBFEA00D250CB /* GameCodeDisplay.swift */,
+				0CCA6FF42B43A7D40013F21C /* JoinGamePlayers.swift */,
+				0CCA6FF62B43C6EB0013F21C /* EnvironmentError.swift */,
 			);
 			path = common;
 			sourceTree = "<group>";
@@ -103,7 +121,7 @@
 		0CE5C4E92B3804C6009B4F08 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				0CE5C4E82B3804C6009B4F08 /* Fake Artist Online.app */,
+				0CE5C4E82B3804C6009B4F08 /* Fake Artist.app */,
 				0CE5C4F82B3804C7009B4F08 /* fake-artist-iosTests.xctest */,
 				0CE5C5022B3804C7009B4F08 /* fake-artist-iosUITests.xctest */,
 			);
@@ -113,11 +131,15 @@
 		0CE5C4EA2B3804C6009B4F08 /* fake-artist-ios */ = {
 			isa = PBXGroup;
 			children = (
+				0C8B1F812B3FD6EE00D250CB /* Info.plist */,
 				0CC27AE72B3D258400F88012 /* common */,
 				0CE5C4EB2B3804C6009B4F08 /* fake_artist_iosApp.swift */,
 				0CE5C4ED2B3804C6009B4F08 /* Home.swift */,
+				0C3618DB2B3F8DE80063C700 /* DrawingWebSocketManager.swift */,
+				0C8B1F822B3FE6E100D250CB /* GlobalStateManager.swift */,
 				0CE5C4EF2B3804C7009B4F08 /* Assets.xcassets */,
 				0CE5C4F12B3804C7009B4F08 /* Preview Content */,
+				0CCA6FF22B420C850013F21C /* CommunicationWebSocketManager.swift */,
 			);
 			path = "fake-artist-ios";
 			sourceTree = "<group>";
@@ -163,8 +185,11 @@
 			dependencies = (
 			);
 			name = "fake-artist-ios";
+			packageProductDependencies = (
+				0C3618D92B3F8DA30063C700 /* SocketIO */,
+			);
 			productName = "fake-artist-ios";
-			productReference = 0CE5C4E82B3804C6009B4F08 /* Fake Artist Online.app */;
+			productReference = 0CE5C4E82B3804C6009B4F08 /* Fake Artist.app */;
 			productType = "com.apple.product-type.application";
 		};
 		0CE5C4F72B3804C7009B4F08 /* fake-artist-iosTests */ = {
@@ -235,6 +260,9 @@
 				Base,
 			);
 			mainGroup = 0CE5C4DF2B3804C6009B4F08;
+			packageReferences = (
+				0C3618D82B3F8DA30063C700 /* XCRemoteSwiftPackageReference "socket.io-client-swift" */,
+			);
 			productRefGroup = 0CE5C4E92B3804C6009B4F08 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -278,11 +306,17 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0C8B1F832B3FE6E100D250CB /* GlobalStateManager.swift in Sources */,
 				0CC27AED2B3DF92A00F88012 /* JoinGameSheet.swift in Sources */,
+				0CCA6FF52B43A7D40013F21C /* JoinGamePlayers.swift in Sources */,
 				0CC27AEB2B3D2F6900F88012 /* NewGameSheet.swift in Sources */,
+				0CCA6FF32B420C850013F21C /* CommunicationWebSocketManager.swift in Sources */,
 				0CC27AE92B3D260400F88012 /* OutlineButtonStyle.swift in Sources */,
+				0C8B1F802B3FBFEA00D250CB /* GameCodeDisplay.swift in Sources */,
 				0CE5C4EE2B3804C6009B4F08 /* Home.swift in Sources */,
 				0CE5C4EC2B3804C6009B4F08 /* fake_artist_iosApp.swift in Sources */,
+				0CCA6FF72B43C6EB0013F21C /* EnvironmentError.swift in Sources */,
+				0C3618DC2B3F8DE80063C700 /* DrawingWebSocketManager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -373,7 +407,7 @@
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
-				PRODUCT_NAME = "Fake Artist Online";
+				PRODUCT_NAME = "Fake Artist";
 				SDKROOT = iphoneos;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -427,7 +461,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 16.4;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
-				PRODUCT_NAME = "Fake Artist Online";
+				PRODUCT_NAME = "Fake Artist";
 				SDKROOT = iphoneos;
 				SWIFT_COMPILATION_MODE = wholemodule;
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
@@ -447,6 +481,7 @@
 				DEVELOPMENT_TEAM = YT6MQG3GTD;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "fake-artist-ios/Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = "Fake Artist";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -477,6 +512,7 @@
 				DEVELOPMENT_TEAM = YT6MQG3GTD;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "fake-artist-ios/Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = "Fake Artist";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -607,6 +643,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		0C3618D82B3F8DA30063C700 /* XCRemoteSwiftPackageReference "socket.io-client-swift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/socketio/socket.io-client-swift.git";
+			requirement = {
+				branch = master;
+				kind = branch;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		0C3618D92B3F8DA30063C700 /* SocketIO */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 0C3618D82B3F8DA30063C700 /* XCRemoteSwiftPackageReference "socket.io-client-swift" */;
+			productName = SocketIO;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 0CE5C4E02B3804C6009B4F08 /* Project object */;
 }
