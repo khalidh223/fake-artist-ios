@@ -18,6 +18,9 @@
 		0CCA6FF32B420C850013F21C /* CommunicationWebSocketManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CCA6FF22B420C850013F21C /* CommunicationWebSocketManager.swift */; };
 		0CCA6FF52B43A7D40013F21C /* JoinGamePlayers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CCA6FF42B43A7D40013F21C /* JoinGamePlayers.swift */; };
 		0CCA6FF72B43C6EB0013F21C /* EnvironmentError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CCA6FF62B43C6EB0013F21C /* EnvironmentError.swift */; };
+		0CCA6FF92B47B4A70013F21C /* CanvasCommunicationWebSocketManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CCA6FF82B47B4A70013F21C /* CanvasCommunicationWebSocketManager.swift */; };
+		0CCA6FFB2B47BD2A0013F21C /* RoleDisplayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CCA6FFA2B47BD2A0013F21C /* RoleDisplayView.swift */; };
+		0CCA6FFD2B4909E70013F21C /* VisualEffectView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CCA6FFC2B4909E70013F21C /* VisualEffectView.swift */; };
 		0CE5C4EC2B3804C6009B4F08 /* fake_artist_iosApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CE5C4EB2B3804C6009B4F08 /* fake_artist_iosApp.swift */; };
 		0CE5C4EE2B3804C6009B4F08 /* Home.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CE5C4ED2B3804C6009B4F08 /* Home.swift */; };
 		0CE5C4F02B3804C7009B4F08 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0CE5C4EF2B3804C7009B4F08 /* Assets.xcassets */; };
@@ -56,6 +59,9 @@
 		0CCA6FF22B420C850013F21C /* CommunicationWebSocketManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunicationWebSocketManager.swift; sourceTree = "<group>"; };
 		0CCA6FF42B43A7D40013F21C /* JoinGamePlayers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JoinGamePlayers.swift; sourceTree = "<group>"; };
 		0CCA6FF62B43C6EB0013F21C /* EnvironmentError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnvironmentError.swift; sourceTree = "<group>"; };
+		0CCA6FF82B47B4A70013F21C /* CanvasCommunicationWebSocketManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CanvasCommunicationWebSocketManager.swift; sourceTree = "<group>"; };
+		0CCA6FFA2B47BD2A0013F21C /* RoleDisplayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoleDisplayView.swift; sourceTree = "<group>"; };
+		0CCA6FFC2B4909E70013F21C /* VisualEffectView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisualEffectView.swift; sourceTree = "<group>"; };
 		0CE5C4E82B3804C6009B4F08 /* Fake Artist.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Fake Artist.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		0CE5C4EB2B3804C6009B4F08 /* fake_artist_iosApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = fake_artist_iosApp.swift; sourceTree = "<group>"; };
 		0CE5C4ED2B3804C6009B4F08 /* Home.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Home.swift; sourceTree = "<group>"; };
@@ -103,6 +109,8 @@
 				0C8B1F7F2B3FBFEA00D250CB /* GameCodeDisplay.swift */,
 				0CCA6FF42B43A7D40013F21C /* JoinGamePlayers.swift */,
 				0CCA6FF62B43C6EB0013F21C /* EnvironmentError.swift */,
+				0CCA6FFA2B47BD2A0013F21C /* RoleDisplayView.swift */,
+				0CCA6FFC2B4909E70013F21C /* VisualEffectView.swift */,
 			);
 			path = common;
 			sourceTree = "<group>";
@@ -136,6 +144,7 @@
 				0CE5C4EB2B3804C6009B4F08 /* fake_artist_iosApp.swift */,
 				0CE5C4ED2B3804C6009B4F08 /* Home.swift */,
 				0C3618DB2B3F8DE80063C700 /* DrawingWebSocketManager.swift */,
+				0CCA6FF82B47B4A70013F21C /* CanvasCommunicationWebSocketManager.swift */,
 				0C8B1F822B3FE6E100D250CB /* GlobalStateManager.swift */,
 				0CE5C4EF2B3804C7009B4F08 /* Assets.xcassets */,
 				0CE5C4F12B3804C7009B4F08 /* Preview Content */,
@@ -308,15 +317,18 @@
 			files = (
 				0C8B1F832B3FE6E100D250CB /* GlobalStateManager.swift in Sources */,
 				0CC27AED2B3DF92A00F88012 /* JoinGameSheet.swift in Sources */,
+				0CCA6FF92B47B4A70013F21C /* CanvasCommunicationWebSocketManager.swift in Sources */,
 				0CCA6FF52B43A7D40013F21C /* JoinGamePlayers.swift in Sources */,
 				0CC27AEB2B3D2F6900F88012 /* NewGameSheet.swift in Sources */,
 				0CCA6FF32B420C850013F21C /* CommunicationWebSocketManager.swift in Sources */,
 				0CC27AE92B3D260400F88012 /* OutlineButtonStyle.swift in Sources */,
 				0C8B1F802B3FBFEA00D250CB /* GameCodeDisplay.swift in Sources */,
 				0CE5C4EE2B3804C6009B4F08 /* Home.swift in Sources */,
+				0CCA6FFD2B4909E70013F21C /* VisualEffectView.swift in Sources */,
 				0CE5C4EC2B3804C6009B4F08 /* fake_artist_iosApp.swift in Sources */,
 				0CCA6FF72B43C6EB0013F21C /* EnvironmentError.swift in Sources */,
 				0C3618DC2B3F8DE80063C700 /* DrawingWebSocketManager.swift in Sources */,
+				0CCA6FFB2B47BD2A0013F21C /* RoleDisplayView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
