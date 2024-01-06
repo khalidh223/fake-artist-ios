@@ -5,6 +5,8 @@ struct JoinGamePlayers: View {
     @ObservedObject private var communicationWebSocketManager = CommunicationWebSocketManager.shared
     @ObservedObject private var drawingWebSocketManager = DrawingWebSocketManager.shared
     @State private var showGameEndedAlert = false
+    @State private var isRolePresented = false
+    @State private var showBlurEffect = false
 
     var onCancel: () -> Void
 
@@ -42,6 +44,20 @@ struct JoinGamePlayers: View {
                 .padding()
                 .foregroundColor(.yellow)
             }
+
+            if showBlurEffect {
+                // Blurry glass-like background
+                Color.clear
+                    .background(VisualEffectView(effect: UIBlurEffect(style: .regular)))
+                    .edgesIgnoringSafeArea(.all)
+                    .transition(.opacity)
+            }
+
+            if isRolePresented {
+                // Role display view
+                RoleDisplayView()
+                    .transition(.scale.combined(with: .opacity))
+            }
         }
         .onAppear {
             let messageData: [String: Any] = [
@@ -70,9 +86,24 @@ struct JoinGamePlayers: View {
                 }
             )
         }
+        .onReceive(globalStateManager.$playerRole) { role in
+            guard !role.isEmpty else { return }
+
+            withAnimation {
+                showBlurEffect = true
+            }
+
+            // Delay the presentation of the role view
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                withAnimation {
+                    isRolePresented = true
+                }
+            }
+        }
     }
 
     private func leaveGame(webSocketManager: CommunicationWebSocketManager, globalStateManager: GlobalStateManager) {
         webSocketManager.sendLeaveGameMessage(gameCode: globalStateManager.gameCode, username: globalStateManager.username)
     }
 }
+

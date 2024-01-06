@@ -13,12 +13,27 @@ class DrawingWebSocketManager: ObservableObject {
         self.drawingSocketManager = SocketManager(socketURL: drawingSocketURL, config: [.log(true), .compress])
         self.drawingSocket = drawingSocketManager.defaultSocket
     }
-    
+
     func establishDrawingSocketConnection() {
         drawingSocket.connect()
+        setupEventListeners()
         isDrawingSocketConnected = true
     }
-    
+
+    private func setupEventListeners() {
+        drawingSocket.on("gameStarted") { [weak self] _, _ in
+            guard let self = self else { return }
+            // Perform the action when gameStarted is received
+            self.handleGameStarted()
+        }
+    }
+
+    private func handleGameStarted() {
+        let gameCode = GlobalStateManager.shared.gameCode
+        let connectionId = GlobalStateManager.shared.communicationConnectionId
+        CanvasCommunicationWebSocketManager.shared.sendRoleToPlayers(gameCode: gameCode, playerConnectionId: connectionId)
+    }
+
     func closeDrawingSocketConnection() {
         drawingSocket.disconnect()
         isDrawingSocketConnected = false

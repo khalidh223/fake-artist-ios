@@ -79,6 +79,13 @@ class CommunicationWebSocketManager: NSObject, ObservableObject, URLSessionWebSo
             GlobalStateManager.shared.setGameInProgress(isGameInProgress: true)
         case "gameFull":
             GlobalStateManager.shared.setGameFull(isGameFull: true)
+        case "roleForPlayer":
+            if let role = dictionary["role"] as? String {
+                DispatchQueue.main.async {
+                    print("Role received: ", role)
+                    GlobalStateManager.shared.setPlayerRole(role)
+                }
+            }
         default:
             print("WebSocketManager: Received action: \(action)")
         }

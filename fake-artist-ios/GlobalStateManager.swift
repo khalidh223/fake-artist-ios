@@ -13,6 +13,7 @@ class GlobalStateManager: ObservableObject {
     @Published var usernameInUse: Bool = false
     @Published var gameInProgress: Bool = false
     @Published var gameFull: Bool = false
+    @Published var playerRole: String = ""
     
     func addPlayer(player: String) {
         players.append(player)
@@ -57,6 +58,12 @@ class GlobalStateManager: ObservableObject {
     func setGameFull(isGameFull: Bool) {
         DispatchQueue.main.async {
             self.gameFull = isGameFull
+        }
+    }
+    
+    func setPlayerRole(_ role: String) {
+        DispatchQueue.main.async {
+            self.playerRole = role
         }
     }
 }

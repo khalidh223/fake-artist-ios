@@ -5,6 +5,8 @@ struct GameCodeDisplay: View {
     @ObservedObject private var globalStateManager = GlobalStateManager.shared
     @ObservedObject private var drawingWebSocket = DrawingWebSocketManager.shared
     @ObservedObject private var communicationWebSocket = CommunicationWebSocketManager.shared
+    @State private var showBlurEffect = false
+    @State private var isRolePresented = false
     let gameCode: String
     var onCancel: () -> Void
 
@@ -66,11 +68,39 @@ struct GameCodeDisplay: View {
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .padding() // Add padding around the entire VStack
+
+            if showBlurEffect {
+                // Blurry glass-like background
+                Color.clear
+                    .background(VisualEffectView(effect: UIBlurEffect(style: .regular)))
+                    .edgesIgnoringSafeArea(.all)
+                    .transition(.opacity)
+            }
+
+            if isRolePresented {
+                // Role display view
+                RoleDisplayView()
+                    .transition(.scale.combined(with: .opacity))
+            }
         }
         .onDisappear {
             leaveGame(webSocketManager: communicationWebSocket,
                       globalStateManager: globalStateManager)
             onCancel()
+        }
+        .onReceive(globalStateManager.$playerRole) { role in
+            guard !role.isEmpty else { return }
+
+            withAnimation {
+                showBlurEffect = true
+            }
+
+            // Delay the presentation of the role view
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                withAnimation {
+                    isRolePresented = true
+                }
+            }
         }
     }
 
