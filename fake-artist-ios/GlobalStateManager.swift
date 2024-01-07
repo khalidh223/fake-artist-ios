@@ -14,6 +14,7 @@ class GlobalStateManager: ObservableObject {
     @Published var gameInProgress: Bool = false
     @Published var gameFull: Bool = false
     @Published var playerRole: String = ""
+    @Published var colorToUsernameMap = [String: String]()
     
     func addPlayer(player: String) {
         players.append(player)
@@ -64,6 +65,12 @@ class GlobalStateManager: ObservableObject {
     func setPlayerRole(_ role: String) {
         DispatchQueue.main.async {
             self.playerRole = role
+        }
+    }
+    
+    func setColorToUsernameMap(color: String, username: String) {
+        DispatchQueue.main.async {
+            self.colorToUsernameMap[color] = username
         }
     }
 }

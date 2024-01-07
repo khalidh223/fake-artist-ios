@@ -1,7 +1,31 @@
 import SwiftUI
 
+struct ColorChoice: Identifiable {
+    let id = UUID()
+    let penColor: String
+    let hex: String
+}
+
+let colors: [ColorChoice] = [
+    ColorChoice(penColor: "black", hex: "#000000"),
+    ColorChoice(penColor: "brown", hex: "#954A13"),
+    ColorChoice(penColor: "darkblue", hex: "#005AA7"),
+    ColorChoice(penColor: "darkpink", hex: "#BE228B"),
+    ColorChoice(penColor: "green", hex: "#006F66"),
+    ColorChoice(penColor: "lightblue", hex: "#00AEEB"),
+    ColorChoice(penColor: "lightgreen", hex: "#76CAA1"),
+    ColorChoice(penColor: "orange", hex: "#FF8335"),
+    ColorChoice(penColor: "pink", hex: "#FB108B"),
+    ColorChoice(penColor: "purple", hex: "#4F4E9D"),
+    ColorChoice(penColor: "red", hex: "#FC212E"),
+    ColorChoice(penColor: "yellow", hex: "#FFF144"),
+]
+
 struct RoleDisplayView: View {
     @ObservedObject var globalStateManager = GlobalStateManager.shared
+    @ObservedObject var canvasCommunicationWebSocketManager = CanvasCommunicationWebSocketManager.shared
+    @ObservedObject var communicationWebSocketManager = CommunicationWebSocketManager.shared
+    @State private var selectedColor: String?
 
     var body: some View {
         VStack {
@@ -13,6 +37,7 @@ struct RoleDisplayView: View {
                 Text("Your role is:")
                     .font(.title)
                     .fontWeight(.bold)
+                    .foregroundColor(.black)
                     .padding(.bottom, 10)
 
                 Image(roleImageName())
@@ -23,24 +48,58 @@ struct RoleDisplayView: View {
                     .frame(width: 151, height: 151)
                     .clipShape(Circle())
                     .overlay(Circle().stroke(Color.black, lineWidth: 3))
+                    .foregroundColor(.black)
                     .padding(.bottom, 10)
 
                 Text(formatRoleName(globalStateManager.playerRole))
                     .font(.largeTitle)
                     .fontWeight(.bold)
+                    .foregroundColor(.black)
                     .multilineTextAlignment(.center)
                     .padding(.bottom, 5)
 
                 Text(roleDescription())
                     .font(.title2)
                     .fontWeight(.bold)
+                    .foregroundColor(.black)
                     .multilineTextAlignment(.center)
                     .padding()
 
                 Text(roleDetails())
                     .font(.body)
+                    .foregroundColor(.black)
                     .multilineTextAlignment(.center)
+                    .fixedSize(horizontal: false, vertical: true)
                     .padding()
+
+                Text("Pick your color:")
+                    .font(.body)
+                    .foregroundColor(.black)
+                    .fontWeight(.bold)
+                    .padding()
+
+                ScrollView(.horizontal, showsIndicators: false) {
+                    HStack(spacing: 15) {
+                        ForEach(colors, id: \.id) { colorChoice in
+                            Image(colorChoice.penColor)
+                                .resizable()
+                                .aspectRatio(contentMode: .fit)
+                                .frame(width: 19, height: 120)
+                                .opacity(isColorDisabled(colorChoice.penColor) ? 0.3 : 1) // More pronounced dimming
+                                .grayscale(isColorDisabled(colorChoice.penColor) ? 1 : 0)
+                                .offset(y: selectedColor == colorChoice.penColor ? -15 : 0) // Shift up if selected
+                                .onTapGesture {
+                                    if !isColorDisabled(colorChoice.penColor) {
+                                        selectedColor = colorChoice.penColor
+                                        sendColorChoice(colorChoice.penColor)
+                                    }
+                                }
+                        }
+                    }
+                    .padding(.horizontal) // Add horizontal padding
+                    .frame(height: 150) // Set a fixed height for the scroll view
+                }
+                .padding(.bottom)
             }
             .background(Color.white)
             .cornerRadius(20)
@@ -48,7 +107,27 @@ struct RoleDisplayView: View {
             .padding(EdgeInsets(top: 0, leading: 20, bottom: 0, trailing: 20))
 
             Spacer()
+        }.onAppear {
+            print("Current colorToUsernameMap: \(globalStateManager.colorToUsernameMap)")
         }
+        .onChange(of: globalStateManager.colorToUsernameMap) { newValue in
+            print("colorToUsernameMap changed: \(newValue)")
+        }
+    }
+
+    private func isColorDisabled(_ color: String) -> Bool {
+        return globalStateManager.colorToUsernameMap[color] != nil && globalStateManager.colorToUsernameMap[color] != globalStateManager.username
+    }
+
+    private func sendColorChoice(_ hexCode: String) {
+        let messageData: [String: Any] = [
+            "action": "sendColorChosen",
+            "colorChosen": hexCode,
+            "gameCode": globalStateManager.gameCode,
+            "connectionId": globalStateManager.communicationConnectionId,
+            "username": globalStateManager.username,
+        ]
+        canvasCommunicationWebSocketManager.sendCommunicationMessage(messageData)
     }
 
     private func formatRoleName(_ role: String) -> String {
