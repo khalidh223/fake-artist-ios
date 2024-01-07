@@ -82,9 +82,12 @@ class CommunicationWebSocketManager: NSObject, ObservableObject, URLSessionWebSo
         case "roleForPlayer":
             if let role = dictionary["role"] as? String {
                 DispatchQueue.main.async {
-                    print("Role received: ", role)
                     GlobalStateManager.shared.setPlayerRole(role)
                 }
+            }
+        case "setColorChosen":
+            if let color = dictionary["colorChosen"] as? String, let username = dictionary["username"] as? String {
+                GlobalStateManager.shared.setColorToUsernameMap(color: color, username: username)
             }
         default:
             print("WebSocketManager: Received action: \(action)")

@@ -23,7 +23,6 @@ class DrawingWebSocketManager: ObservableObject {
     private func setupEventListeners() {
         drawingSocket.on("gameStarted") { [weak self] _, _ in
             guard let self = self else { return }
-            // Perform the action when gameStarted is received
             self.handleGameStarted()
         }
     }
