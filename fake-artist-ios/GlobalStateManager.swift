@@ -15,7 +15,12 @@ class GlobalStateManager: ObservableObject {
     @Published var gameFull: Bool = false
     @Published var playerRole: String = ""
     @Published var colorToUsernameMap = [String: String]()
-    
+    @Published var userSelectedColorHex: String = ""
+    @Published var playerToConfirmedColor = [String: String]()
+    @Published var allPlayersConfirmedColor = false
+    @Published var themeChosenByQuestionMaster = ""
+    @Published var titleChosenByQuestionMaster = ""
+
     func addPlayer(player: String) {
         players.append(player)
     }
@@ -70,7 +75,25 @@ class GlobalStateManager: ObservableObject {
     
     func setColorToUsernameMap(color: String, username: String) {
         DispatchQueue.main.async {
+            for (existingColor, existingUsername) in self.colorToUsernameMap {
+                if existingUsername == username {
+                    self.colorToUsernameMap[existingColor] = nil
+                }
+            }
+
             self.colorToUsernameMap[color] = username
+        }
+    }
+    
+    func setUserSelectedColor(hex: String) {
+        DispatchQueue.main.async {
+            self.userSelectedColorHex = hex
+        }
+    }
+    
+    func setConfirmedColorForPlayer(color: String, username: String) {
+        DispatchQueue.main.async {
+            self.playerToConfirmedColor[username] = color
         }
     }
 }
