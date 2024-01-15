@@ -89,6 +89,28 @@ class CommunicationWebSocketManager: NSObject, ObservableObject, URLSessionWebSo
             if let color = dictionary["colorChosen"] as? String, let username = dictionary["username"] as? String {
                 GlobalStateManager.shared.setColorToUsernameMap(color: color, username: username)
             }
+        case "colorConfirmed":
+            if let color = dictionary["color"] as? String, let username = dictionary["username"] as? String {
+                GlobalStateManager.shared.setConfirmedColorForPlayer(color: color, username: username)
+            }
+        case "allPlayersConfirmedColor":
+            if let allPlayersConfirmed = dictionary["allPlayersConfirmedColor"] as? Bool, allPlayersConfirmed {
+                DispatchQueue.main.async {
+                    GlobalStateManager.shared.allPlayersConfirmedColor = true
+                }
+            }
+        case "setThemeChosenByQuestionMaster":
+            if let theme = dictionary["theme"] as? String {
+                DispatchQueue.main.async {
+                    GlobalStateManager.shared.themeChosenByQuestionMaster = theme
+                }
+            }
+        case "setTitleChosenByQuestionMaster":
+            if let title = dictionary["title"] as? String {
+                DispatchQueue.main.async {
+                    GlobalStateManager.shared.titleChosenByQuestionMaster = title
+                }
+            }
         default:
             print("WebSocketManager: Received action: \(action)")
         }

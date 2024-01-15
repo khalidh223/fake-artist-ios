@@ -50,13 +50,13 @@ class CanvasCommunicationWebSocketManager: NSObject, ObservableObject, URLSessio
     }
     
     func sendRoleToPlayers(gameCode: String, playerConnectionId: String) {
-            let data: [String: Any] = [
-                "action": "sendRoleToPlayers",
-                "gameCode": gameCode,
-                "playerConnectionId": playerConnectionId
-            ]
-            sendCommunicationMessage(data)
-        }
+        let data: [String: Any] = [
+            "action": "sendRoleToPlayers",
+            "gameCode": gameCode,
+            "playerConnectionId": playerConnectionId
+        ]
+        sendCommunicationMessage(data)
+    }
 
     func disconnect() {
         canvasCommunicationWebSocket?.cancel()

@@ -96,7 +96,7 @@ struct GameCodeDisplay: View {
             }
 
             // Delay the presentation of the role view
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
                 withAnimation {
                     isRolePresented = true
                 }
