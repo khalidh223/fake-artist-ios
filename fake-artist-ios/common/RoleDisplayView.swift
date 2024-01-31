@@ -33,133 +33,144 @@ struct RoleDisplayView: View {
     @State private var title = ""
 
     var body: some View {
-        ZStack {
-            if !showWaitingText {
-                VStack {
-                    Spacer()
-
+        if !globalStateManager.showDrawCanvasView {
+            ZStack {
+                if !showWaitingText {
                     VStack {
-                        Text("")
-                            .padding(.bottom, 10)
+                        Spacer()
 
-                        Image(roleImageName())
-                            .resizable()
-                            .scaledToFill()
-                            .scaleEffect(0.7)
-                            .offset(y: 20)
-                            .frame(width: 151, height: 151)
-                            .clipShape(Circle())
-                            .overlay(Circle().stroke(Color.black, lineWidth: 3))
-                            .foregroundColor(.black)
-                            .padding(.bottom, 10)
+                        VStack {
+                            Text("")
+                                .padding(.bottom, 10)
 
-                        Text(formatRoleName(globalStateManager.playerRole))
-                            .font(.largeTitle)
-                            .fontWeight(.bold)
-                            .foregroundColor(.black)
-                            .multilineTextAlignment(.center)
-                            .padding(.bottom, 5)
-
-                        Text(roleDescription())
-                            .font(.title2)
-                            .fontWeight(.bold)
-                            .foregroundColor(.black)
-                            .multilineTextAlignment(.center)
-                            .padding()
-
-                        Text(roleDetails())
-                            .font(.body)
-                            .foregroundColor(.black)
-                            .multilineTextAlignment(.center)
-                            .fixedSize(horizontal: false, vertical: true)
-                            .padding()
-
-                        if globalStateManager.playerRole != "QUESTION_MASTER" {
-                            Text("Pick your color:")
-                                .font(.body)
+                            Image(roleImageName())
+                                .resizable()
+                                .scaledToFill()
+                                .scaleEffect(0.7)
+                                .offset(y: 20)
+                                .frame(width: 151, height: 151)
+                                .clipShape(Circle())
+                                .overlay(Circle().stroke(Color.black, lineWidth: 3))
                                 .foregroundColor(.black)
+                                .padding(.bottom, 10)
+
+                            Text(formatRoleName(globalStateManager.playerRole))
+                                .font(.largeTitle)
                                 .fontWeight(.bold)
+                                .foregroundColor(.black)
+                                .multilineTextAlignment(.center)
+                                .padding(.bottom, 5)
+
+                            Text(roleDescription())
+                                .font(.title2)
+                                .fontWeight(.bold)
+                                .foregroundColor(.black)
+                                .multilineTextAlignment(.center)
                                 .padding()
 
-                            GeometryReader { geometry in
-                                ScrollView(.horizontal, showsIndicators: false) {
-                                    HStack(spacing: 15) {
-                                        ForEach(colors, id: \.id) { colorChoice in
-                                            Image(colorChoice.penColor)
-                                                .resizable()
-                                                .aspectRatio(contentMode: .fit)
-                                                .frame(width: 19, height: 120)
-                                                .opacity(isColorDisabled(colorChoice.penColor) ? 0.3 : 1)
-                                                .grayscale(isColorDisabled(colorChoice.penColor) ? 1 : 0)
-                                                .offset(y: selectedColor == colorChoice.penColor ? -15 : 0)
-                                                .onTapGesture {
-                                                    if !isColorDisabled(colorChoice.penColor) {
-                                                        selectedColor = colorChoice.penColor
-                                                        sendColorChoice(colorChoice.penColor)
+                            Text(roleDetails())
+                                .font(.body)
+                                .foregroundColor(.black)
+                                .multilineTextAlignment(.center)
+                                .fixedSize(horizontal: false, vertical: true)
+                                .padding()
+
+                            if globalStateManager.playerRole != "QUESTION_MASTER" {
+                                Text("Pick your color:")
+                                    .font(.body)
+                                    .foregroundColor(.black)
+                                    .fontWeight(.bold)
+                                    .padding()
+
+                                GeometryReader { geometry in
+                                    ScrollView(.horizontal, showsIndicators: false) {
+                                        HStack(spacing: 15) {
+                                            ForEach(colors, id: \.id) { colorChoice in
+                                                Image(colorChoice.penColor)
+                                                    .resizable()
+                                                    .aspectRatio(contentMode: .fit)
+                                                    .frame(width: 19, height: 120)
+                                                    .opacity(isColorDisabled(colorChoice.penColor) ? 0.3 : 1)
+                                                    .grayscale(isColorDisabled(colorChoice.penColor) ? 1 : 0)
+                                                    .offset(y: selectedColor == colorChoice.penColor ? -15 : 0)
+                                                    .onTapGesture {
+                                                        if !isColorDisabled(colorChoice.penColor) {
+                                                            selectedColor = colorChoice.penColor
+                                                            sendColorChoice(colorChoice.penColor)
+                                                        }
                                                     }
-                                                }
+                                            }
+                                        }
+                                        .padding(.horizontal)
+                                        .frame(height: 150)
+                                        .frame(minWidth: geometry.size.width)
+                                    }
+                                }
+                                .frame(height: 150)
+                                .padding(.bottom)
+                            } else {
+                                PickTitleAndThemeView(theme: $theme, title: $title)
+                            }
+
+                            Button("Done") {
+                                if globalStateManager.playerRole == "QUESTION_MASTER" {
+                                    sendThemeAndTitle()
+                                    globalStateManager.setShowDrawCanvasView(isDrawCanvasShown: true)
+                                } else {
+                                    if let selectedColor = selectedColor, let colorHex = colors.first(where: { $0.penColor == selectedColor })?.hex {
+                                        sendColorConfirmed(colorHex)
+                                        withAnimation {
+                                            showWaitingText = true
                                         }
                                     }
-                                    .padding(.horizontal)
-                                    .frame(height: 150)
-                                    .frame(minWidth: geometry.size.width)
                                 }
                             }
-                            .frame(height: 150)
-                            .padding(.bottom)
-                        } else {
-                            PickTitleAndThemeView(theme: $theme, title: $title)
+                            .disabled((globalStateManager.playerRole == "QUESTION_MASTER" && (theme.isEmpty || title.isEmpty)) || (globalStateManager.playerRole != "QUESTION_MASTER" && selectedColor == nil))
+                            .padding()
                         }
+                        .background(Color.white)
+                        .cornerRadius(20)
+                        .shadow(radius: 10)
+                        .padding(EdgeInsets(top: 0, leading: 20, bottom: 0, trailing: 20))
 
-                        Button("Done") {
-                            if globalStateManager.playerRole == "QUESTION_MASTER" {
-                                sendThemeAndTitle()
-                            } else {
-                                if let selectedColor = selectedColor, let colorHex = colors.first(where: { $0.penColor == selectedColor })?.hex {
-                                    sendColorConfirmed(colorHex)
-                                    withAnimation {
-                                        showWaitingText = true
-                                    }
-                                }
+                        Spacer()
+                    }
+                } else if globalStateManager.allPlayersConfirmedColor {
+                    QuestionMasterSayingThemeView(onThemeDisplayed: {
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+                            withAnimation {
+                                showCardView = true
                             }
                         }
-                        .disabled((globalStateManager.playerRole == "QUESTION_MASTER" && (theme.isEmpty || title.isEmpty)) || (globalStateManager.playerRole != "QUESTION_MASTER" && selectedColor == nil))
+                    })
+                    .opacity(showCardView ? 0 : 1)
+                } else {
+                    Text("Waiting for all players to pick their colors...")
+                        .font(.title)
+                        .fontWeight(.bold)
+                        .foregroundColor(.white)
+                        .multilineTextAlignment(.center)
                         .padding()
-                    }
-                    .background(Color.white)
-                    .cornerRadius(20)
-                    .shadow(radius: 10)
-                    .padding(EdgeInsets(top: 0, leading: 20, bottom: 0, trailing: 20))
-
-                    Spacer()
                 }
-            } else if globalStateManager.allPlayersConfirmedColor {
-                QuestionMasterSayingThemeView(onThemeDisplayed: {
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
-                        withAnimation {
-                            showCardView = true
-                        }
-                    }
-                })
-                .opacity(showCardView ? 0 : 1)
-            } else {
-                Text("Waiting for all players to pick their colors...")
-                    .font(.title)
-                    .fontWeight(.bold)
-                    .foregroundColor(.white)
-                    .multilineTextAlignment(.center)
-                    .padding()
-            }
 
-            if showCardView {
-                CardView()
-                    .transition(.slide)
+                if showCardView {
+                    CardView()
+                        .transition(.slide)
+                }
             }
-        }
-        .onChange(of: globalStateManager.allPlayersConfirmedColor) { _ in
-            withAnimation {
-                showConfirmationView = globalStateManager.allPlayersConfirmedColor
+            .onChange(of: globalStateManager.allPlayersConfirmedColor) { _ in
+                withAnimation {
+                    showConfirmationView = globalStateManager.allPlayersConfirmedColor
+                }
             }
+            .onChange(of: globalStateManager.showDrawCanvasView) { show in
+                if show {
+                    // Hide the blur effect
+                    globalStateManager.showBlurEffect = false
+                }
+            }
+        } else {
+            DrawCanvasView().transition(.opacity)
         }
     }
 

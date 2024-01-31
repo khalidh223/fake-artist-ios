@@ -25,12 +25,33 @@ class DrawingWebSocketManager: ObservableObject {
             guard let self = self else { return }
             self.handleGameStarted()
         }
+        drawingSocket.on("drawingData") { [weak self] data, _ in
+            guard let self = self else { return }
+            self.handleDrawingData(data.first as? [String: Any] ?? [:])
+        }
     }
 
     private func handleGameStarted() {
         let gameCode = GlobalStateManager.shared.gameCode
         let connectionId = GlobalStateManager.shared.communicationConnectionId
-        CanvasCommunicationWebSocketManager.shared.sendRoleToPlayers(gameCode: gameCode, playerConnectionId: connectionId)
+        CanvasCommunicationWebSocketManager.shared.sendRequestRole(gameCode: gameCode, playerConnectionId: connectionId)
+    }
+
+    @Published var receivedDrawingData: DrawingData?
+
+    private func handleDrawingData(_ data: [String: Any]) {
+        guard let x = data["x"] as? Double,
+              let y = data["y"] as? Double,
+              let prevX = data["prevX"] as? Double,
+              let prevY = data["prevY"] as? Double,
+              let color = data["color"] as? String
+        else {
+            return
+        }
+
+        DispatchQueue.main.async {
+            self.receivedDrawingData = DrawingData(x: x, y: y, prevX: prevX, prevY: prevY, color: color)
+        }
     }
 
     func closeDrawingSocketConnection() {

@@ -6,56 +6,59 @@ struct JoinGamePlayers: View {
     @ObservedObject private var drawingWebSocketManager = DrawingWebSocketManager.shared
     @State private var showGameEndedAlert = false
     @State private var isRolePresented = false
-    @State private var showBlurEffect = false
 
     var onCancel: () -> Void
 
     var body: some View {
         ZStack {
-            Color(red: 115.0 / 255.0, green: 5.0 / 255.0, blue: 60.0 / 255.0)
-                .edgesIgnoringSafeArea(.all)
-            VStack {
-                Spacer() // Pushes content to the center
+            if globalStateManager.showDrawCanvasView {
+                DrawCanvasView().transition(.opacity)
+            } else {
+                Color(red: 115.0 / 255.0, green: 5.0 / 255.0, blue: 60.0 / 255.0)
+                    .edgesIgnoringSafeArea(.all)
+                VStack {
+                    Spacer() // Pushes content to the center
 
-                Text("Waiting for host to start game...")
-                    .font(.title)
-                    .fontWeight(.bold)
-                    .foregroundColor(.white)
+                    Text("Waiting for host to start game...")
+                        .font(.title)
+                        .fontWeight(.bold)
+                        .foregroundColor(.white)
 
-                ScrollView {
-                    VStack {
-                        ForEach(globalStateManager.players, id: \.self) { player in
-                            Text(player)
-                                .frame(maxWidth: .infinity)
-                                .multilineTextAlignment(.center)
-                                .foregroundColor(.white)
+                    ScrollView {
+                        VStack {
+                            ForEach(globalStateManager.players, id: \.self) { player in
+                                Text(player)
+                                    .frame(maxWidth: .infinity)
+                                    .multilineTextAlignment(.center)
+                                    .foregroundColor(.white)
+                            }
                         }
                     }
+                    .frame(maxHeight: 200)
+
+                    Spacer()
+
+                    Button("Cancel") {
+                        leaveGame(webSocketManager: communicationWebSocketManager,
+                                  globalStateManager: globalStateManager)
+                        onCancel()
+                    }
+                    .padding()
+                    .foregroundColor(.yellow)
                 }
-                .frame(maxHeight: 200)
 
-                Spacer()
-
-                Button("Cancel") {
-                    leaveGame(webSocketManager: communicationWebSocketManager,
-                              globalStateManager: globalStateManager)
-                    onCancel()
+                if globalStateManager.showBlurEffect {
+                    // Blurry glass-like background
+                    Color.clear
+                        .background(VisualEffectView(effect: UIBlurEffect(style: .regular)))
+                        .edgesIgnoringSafeArea(.all)
+                        .transition(.opacity)
                 }
-                .padding()
-                .foregroundColor(.yellow)
-            }
 
-            if showBlurEffect {
-                // Blurry glass-like background
-                Color.clear
-                    .background(VisualEffectView(effect: UIBlurEffect(style: .regular)))
-                    .edgesIgnoringSafeArea(.all)
-                    .transition(.opacity)
-            }
-
-            if isRolePresented {
-                RoleDisplayView()
-                    .transition(.scale.combined(with: .opacity))
+                if isRolePresented {
+                    RoleDisplayView()
+                        .transition(.scale.combined(with: .opacity))
+                }
             }
         }
         .onAppear {
@@ -89,7 +92,7 @@ struct JoinGamePlayers: View {
             guard !role.isEmpty else { return }
 
             withAnimation {
-                showBlurEffect = true
+                globalStateManager.showBlurEffect = true
             }
 
             // Delay the presentation of the role view
@@ -105,4 +108,3 @@ struct JoinGamePlayers: View {
         webSocketManager.sendLeaveGameMessage(gameCode: globalStateManager.gameCode, username: globalStateManager.username)
     }
 }
-

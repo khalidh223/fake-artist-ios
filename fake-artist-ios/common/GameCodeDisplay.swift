@@ -5,8 +5,8 @@ struct GameCodeDisplay: View {
     @ObservedObject private var globalStateManager = GlobalStateManager.shared
     @ObservedObject private var drawingWebSocket = DrawingWebSocketManager.shared
     @ObservedObject private var communicationWebSocket = CommunicationWebSocketManager.shared
-    @State private var showBlurEffect = false
     @State private var isRolePresented = false
+    @State private var isStartingGame = false
     let gameCode: String
     var onCancel: () -> Void
 
@@ -17,70 +17,81 @@ struct GameCodeDisplay: View {
 
     var body: some View {
         ZStack {
-            Color(red: 115.0 / 255.0, green: 5.0 / 255.0, blue: 60.0 / 255.0)
-                .edgesIgnoringSafeArea(.all)
+            if !globalStateManager.showDrawCanvasView {
+                Color(red: 115.0 / 255.0, green: 5.0 / 255.0, blue: 60.0 / 255.0)
+                    .edgesIgnoringSafeArea(.all)
 
-            VStack {
-                Spacer() // Pushes content to the center
+                VStack {
+                    Spacer() // Pushes content to the center
 
-                Text("Your game code is:")
-                    .font(.title)
-                    .fontWeight(.bold)
-                    .foregroundColor(.white)
+                    Text("Your game code is:")
+                        .font(.title)
+                        .fontWeight(.bold)
+                        .foregroundColor(.white)
 
-                Text(gameCode)
-                    .font(.largeTitle)
-                    .fontWeight(.bold)
-                    .foregroundColor(.white)
-                    .padding(.bottom)
+                    Text(gameCode)
+                        .font(.largeTitle)
+                        .fontWeight(.bold)
+                        .foregroundColor(.white)
+                        .padding(.bottom)
 
-                ScrollView {
-                    VStack {
-                        ForEach(globalStateManager.players, id: \.self) { player in
-                            Text(player)
-                                .frame(maxWidth: .infinity)
-                                .multilineTextAlignment(.center)
-                                .foregroundColor(.white)
+                    ScrollView {
+                        VStack {
+                            ForEach(globalStateManager.players, id: \.self) { player in
+                                Text(player)
+                                    .frame(maxWidth: .infinity)
+                                    .multilineTextAlignment(.center)
+                                    .foregroundColor(.white)
+                            }
                         }
                     }
-                }
-                .frame(maxHeight: 200) // Adjust as needed
+                    .frame(maxHeight: 200) // Adjust as needed
 
-                Spacer()
+                    Spacer()
 
-                if globalStateManager.players.count >= 5 {
-                    Button("Start!") {
-                        startGame(drawingSocket: drawingWebSocket,
-                                  communicationSocket: communicationWebSocket, gameCode: gameCode)
+                    if globalStateManager.players.count >= 2 {
+                        if isStartingGame {
+                            ProgressView()
+                                .progressViewStyle(CircularProgressViewStyle(tint: .green))
+                                .scaleEffect(1.5, anchor: .center)
+                        } else {
+                            Button("Start!") {
+                                isStartingGame = true
+                                startGame(drawingSocket: drawingWebSocket,
+                                          communicationSocket: communicationWebSocket, gameCode: gameCode)
+                            }
+                            .disabled(globalStateManager.players.count < 2)
+                            .padding()
+                            .foregroundColor(.green)
+                        }
                     }
-                    .disabled(globalStateManager.players.count < 5)
+
+                    Button("Cancel") {
+                        leaveGame(webSocketManager: communicationWebSocket,
+                                  globalStateManager: globalStateManager)
+                        onCancel()
+                    }
                     .padding()
-                    .foregroundColor(.green)
+                    .foregroundColor(.yellow)
+                }
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
+                .padding() // Add padding around the entire VStack
+
+                if globalStateManager.showBlurEffect {
+                    // Blurry glass-like background
+                    Color.clear
+                        .background(VisualEffectView(effect: UIBlurEffect(style: .regular)))
+                        .edgesIgnoringSafeArea(.all)
+                        .transition(.opacity)
                 }
 
-                Button("Cancel") {
-                    leaveGame(webSocketManager: communicationWebSocket,
-                              globalStateManager: globalStateManager)
-                    onCancel()
+                if isRolePresented {
+                    // Role display view
+                    RoleDisplayView()
+                        .transition(.scale.combined(with: .opacity))
                 }
-                .padding()
-                .foregroundColor(.yellow)
-            }
-            .frame(maxWidth: .infinity, maxHeight: .infinity)
-            .padding() // Add padding around the entire VStack
-
-            if showBlurEffect {
-                // Blurry glass-like background
-                Color.clear
-                    .background(VisualEffectView(effect: UIBlurEffect(style: .regular)))
-                    .edgesIgnoringSafeArea(.all)
-                    .transition(.opacity)
-            }
-
-            if isRolePresented {
-                // Role display view
-                RoleDisplayView()
-                    .transition(.scale.combined(with: .opacity))
+            } else {
+                DrawCanvasView().transition(.opacity)
             }
         }
         .onDisappear {
@@ -92,7 +103,7 @@ struct GameCodeDisplay: View {
             guard !role.isEmpty else { return }
 
             withAnimation {
-                showBlurEffect = true
+                globalStateManager.showBlurEffect = true
             }
 
             // Delay the presentation of the role view

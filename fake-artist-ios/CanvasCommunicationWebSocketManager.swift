@@ -49,9 +49,10 @@ class CanvasCommunicationWebSocketManager: NSObject, ObservableObject, URLSessio
         }
     }
     
-    func sendRoleToPlayers(gameCode: String, playerConnectionId: String) {
+    
+    func sendRequestRole(gameCode: String, playerConnectionId: String) {
         let data: [String: Any] = [
-            "action": "sendRoleToPlayers",
+            "action": "requestRole",
             "gameCode": gameCode,
             "playerConnectionId": playerConnectionId
         ]

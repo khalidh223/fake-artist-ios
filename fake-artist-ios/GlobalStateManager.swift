@@ -20,6 +20,8 @@ class GlobalStateManager: ObservableObject {
     @Published var allPlayersConfirmedColor = false
     @Published var themeChosenByQuestionMaster = ""
     @Published var titleChosenByQuestionMaster = ""
+    @Published var showDrawCanvasView = false
+    @Published var showBlurEffect = false
 
     func addPlayer(player: String) {
         players.append(player)
@@ -94,6 +96,12 @@ class GlobalStateManager: ObservableObject {
     func setConfirmedColorForPlayer(color: String, username: String) {
         DispatchQueue.main.async {
             self.playerToConfirmedColor[username] = color
+        }
+    }
+    
+    func setShowDrawCanvasView(isDrawCanvasShown: Bool) {
+        DispatchQueue.main.async {
+            self.showDrawCanvasView = isDrawCanvasShown
         }
     }
 }

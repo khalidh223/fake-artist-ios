@@ -1,10 +1,28 @@
 import SwiftUI
 
+struct OkayButton: View {
+    var text: String
+    var action: () -> Void
+
+    var body: some View {
+        Button(action: action) {
+            Rectangle()
+                .foregroundColor(Color.black.opacity(0.001))
+                .frame(height: 20)
+                .overlay(
+                    Text(text)
+                )
+        }.frame(width: 120)
+        .buttonStyle(OutlineButtonStyle(borderColor: Color(red: 241.0 / 255.0, green: 10.0 / 255.0, blue: 126.0 / 255.0), textColor: Color(red: 241.0 / 255.0, green: 10.0 / 255.0, blue: 126.0 / 255.0), borderWidth: 1))
+    }
+}
+
 struct CardView: View {
     @ObservedObject var globalStateManager = GlobalStateManager.shared
     @State private var flipped = false
     @State private var appear = false
     @State private var selectedCardImage: String = ""
+    var onOkayButtonTapped: (() -> Void)?
 
     var body: some View {
         let imageAspectRatio: CGFloat = 1344 / 602
@@ -22,6 +40,11 @@ struct CardView: View {
                         Text("\(globalStateManager.titleChosenByQuestionMaster.isEmpty ? "X" : globalStateManager.titleChosenByQuestionMaster)")
                             .font(.title)
                             .fontWeight(.bold)
+                        OkayButton(text: "Okay", action: {
+                            withAnimation {
+                                globalStateManager.showDrawCanvasView = true
+                            }
+                        })
                     }
                     .padding(.all)
 
