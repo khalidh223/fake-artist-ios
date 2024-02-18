@@ -10,8 +10,8 @@
 		0C3618D72B3F58F90063C700 /* .gitignore in Resources */ = {isa = PBXBuildFile; fileRef = 0C3618D62B3F58F90063C700 /* .gitignore */; };
 		0C3618DA2B3F8DA30063C700 /* SocketIO in Frameworks */ = {isa = PBXBuildFile; productRef = 0C3618D92B3F8DA30063C700 /* SocketIO */; };
 		0C3618DC2B3F8DE80063C700 /* DrawingWebSocketManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C3618DB2B3F8DE80063C700 /* DrawingWebSocketManager.swift */; };
-		0C7A1E102B54DDB700EEF7A1 /* DrawCanvasView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C7A1E0F2B54DDB700EEF7A1 /* DrawCanvasView.swift */; };
 		0C7A1E142B68AE3600EEF7A1 /* DrawingData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C7A1E132B68AE3600EEF7A1 /* DrawingData.swift */; };
+		0C7A1E1A2B81940500EEF7A1 /* DrawCanvasView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C7A1E192B81940500EEF7A1 /* DrawCanvasView.swift */; };
 		0C8B1F802B3FBFEA00D250CB /* GameCodeDisplay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C8B1F7F2B3FBFEA00D250CB /* GameCodeDisplay.swift */; };
 		0C8B1F832B3FE6E100D250CB /* GlobalStateManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C8B1F822B3FE6E100D250CB /* GlobalStateManager.swift */; };
 		0CC27AE92B3D260400F88012 /* OutlineButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CC27AE82B3D260400F88012 /* OutlineButtonStyle.swift */; };
@@ -55,8 +55,8 @@
 /* Begin PBXFileReference section */
 		0C3618D62B3F58F90063C700 /* .gitignore */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
 		0C3618DB2B3F8DE80063C700 /* DrawingWebSocketManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrawingWebSocketManager.swift; sourceTree = "<group>"; };
-		0C7A1E0F2B54DDB700EEF7A1 /* DrawCanvasView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrawCanvasView.swift; sourceTree = "<group>"; };
 		0C7A1E132B68AE3600EEF7A1 /* DrawingData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrawingData.swift; sourceTree = "<group>"; };
+		0C7A1E192B81940500EEF7A1 /* DrawCanvasView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrawCanvasView.swift; sourceTree = "<group>"; };
 		0C8B1F7F2B3FBFEA00D250CB /* GameCodeDisplay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameCodeDisplay.swift; sourceTree = "<group>"; };
 		0C8B1F812B3FD6EE00D250CB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		0C8B1F822B3FE6E100D250CB /* GlobalStateManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlobalStateManager.swift; sourceTree = "<group>"; };
@@ -124,7 +124,7 @@
 				0CCA6FFE2B4A76410013F21C /* QuestionMasterSayingThemeView.swift */,
 				0CCA70002B53730D0013F21C /* CardView.swift */,
 				0CCA70022B53B7660013F21C /* PickTitleAndThemeView.swift */,
-				0C7A1E0F2B54DDB700EEF7A1 /* DrawCanvasView.swift */,
+				0C7A1E192B81940500EEF7A1 /* DrawCanvasView.swift */,
 			);
 			path = common;
 			sourceTree = "<group>";
@@ -330,9 +330,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0C7A1E1A2B81940500EEF7A1 /* DrawCanvasView.swift in Sources */,
 				0C8B1F832B3FE6E100D250CB /* GlobalStateManager.swift in Sources */,
 				0CC27AED2B3DF92A00F88012 /* JoinGameSheet.swift in Sources */,
-				0C7A1E102B54DDB700EEF7A1 /* DrawCanvasView.swift in Sources */,
 				0CCA6FFF2B4A76410013F21C /* QuestionMasterSayingThemeView.swift in Sources */,
 				0C7A1E142B68AE3600EEF7A1 /* DrawingData.swift in Sources */,
 				0CCA6FF92B47B4A70013F21C /* CanvasCommunicationWebSocketManager.swift in Sources */,
