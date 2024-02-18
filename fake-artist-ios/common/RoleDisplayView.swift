@@ -184,7 +184,7 @@ struct RoleDisplayView: View {
 
             let messageData: [String: Any] = [
                 "action": "sendColorChosen",
-                "colorChosen": colorName, // Sending the color name, not hex
+                "colorChosen": colorName,
                 "gameCode": globalStateManager.gameCode,
                 "connectionId": globalStateManager.communicationConnectionId,
                 "username": globalStateManager.username,
@@ -211,6 +211,8 @@ struct RoleDisplayView: View {
             "gameCode": globalStateManager.gameCode,
         ]
         communicationWebSocketManager.sendCommunicationMessage(messageData)
+        globalStateManager.setThemeChosenByQuestionMaster(theme: theme)
+        globalStateManager.setTitleChosenByQuestionMaster(title: title)
     }
 
     private func formatRoleName(_ role: String) -> String {

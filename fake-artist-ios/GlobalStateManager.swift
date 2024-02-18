@@ -104,4 +104,16 @@ class GlobalStateManager: ObservableObject {
             self.showDrawCanvasView = isDrawCanvasShown
         }
     }
+    
+    func setThemeChosenByQuestionMaster(theme: String) {
+        DispatchQueue.main.async {
+            self.themeChosenByQuestionMaster = theme
+        }
+    }
+    
+    func setTitleChosenByQuestionMaster(title: String) {
+        DispatchQueue.main.async {
+            self.titleChosenByQuestionMaster = title
+        }
+    }
 }

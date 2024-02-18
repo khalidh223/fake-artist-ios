@@ -44,11 +44,11 @@ struct NewGameSheet: View {
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
                     self.isUsernameFieldFocused = true
                 }
-                
+
                 if !drawingWebSocket.isDrawingSocketConnected {
                     drawingWebSocket.establishDrawingSocketConnection()
                 }
-                
+
                 if !communicationWebSocket.isCommunicationSocketConnected {
                     communicationWebSocket.setupCommunicationSocket()
                 }
