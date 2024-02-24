@@ -48,8 +48,11 @@ struct JoinGameSheet: View {
 
                 TextField("Username", text: $username)
                     .textFieldStyle(RoundedBorderTextFieldStyle())
-                    .autocapitalization(.none)
+                    .textInputAutocapitalization(.never)
                     .padding()
+                    .onChange(of: username) { newValue in
+                        username = newValue.lowercased()
+                    }
                     .focused($isUsernameFieldFocused)
 
                 Spacer()

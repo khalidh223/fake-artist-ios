@@ -116,6 +116,10 @@ struct RoleDisplayView: View {
                                 if globalStateManager.playerRole == "QUESTION_MASTER" {
                                     sendThemeAndTitle()
                                     globalStateManager.setShowDrawCanvasView(isDrawCanvasShown: true)
+                                    if globalStateManager.currentPlayerDrawing == "" {
+                                        let sortedPlayers = globalStateManager.players.sorted { $0.lowercased() < $1.lowercased() }.filter { player in player != globalStateManager.username }
+                                        globalStateManager.currentPlayerDrawing = sortedPlayers[0]
+                                    }
                                 } else {
                                     if let selectedColor = selectedColor, let colorHex = colors.first(where: { $0.penColor == selectedColor })?.hex {
                                         sendColorConfirmed(colorHex)

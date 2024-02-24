@@ -13,7 +13,7 @@ struct OkayButton: View {
                     Text(text)
                 )
         }.frame(width: 120)
-        .buttonStyle(OutlineButtonStyle(borderColor: Color(red: 241.0 / 255.0, green: 10.0 / 255.0, blue: 126.0 / 255.0), textColor: Color(red: 241.0 / 255.0, green: 10.0 / 255.0, blue: 126.0 / 255.0), borderWidth: 1))
+            .buttonStyle(OutlineButtonStyle(borderColor: Color(red: 241.0 / 255.0, green: 10.0 / 255.0, blue: 126.0 / 255.0), textColor: Color(red: 241.0 / 255.0, green: 10.0 / 255.0, blue: 126.0 / 255.0), borderWidth: 1))
     }
 }
 
@@ -43,6 +43,10 @@ struct CardView: View {
                         OkayButton(text: "Okay", action: {
                             withAnimation {
                                 globalStateManager.showDrawCanvasView = true
+                                if globalStateManager.currentPlayerDrawing == "" {
+                                    let sortedPlayers = globalStateManager.players.sorted { $0.lowercased() < $1.lowercased() }.filter { player in player != globalStateManager.questionMaster }
+                                    globalStateManager.currentPlayerDrawing = sortedPlayers[0]
+                                }
                             }
                         })
                     }

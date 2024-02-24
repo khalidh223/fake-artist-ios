@@ -49,7 +49,7 @@ struct GameCodeDisplay: View {
 
                     Spacer()
 
-                    if globalStateManager.players.count >= 2 {
+                    if globalStateManager.players.count >= 5 {
                         if isStartingGame {
                             ProgressView()
                                 .progressViewStyle(CircularProgressViewStyle(tint: .green))
@@ -60,7 +60,7 @@ struct GameCodeDisplay: View {
                                 startGame(drawingSocket: drawingWebSocket,
                                           communicationSocket: communicationWebSocket, gameCode: gameCode)
                             }
-                            .disabled(globalStateManager.players.count < 2)
+                            .disabled(globalStateManager.players.count < 5)
                             .padding()
                             .foregroundColor(.green)
                         }

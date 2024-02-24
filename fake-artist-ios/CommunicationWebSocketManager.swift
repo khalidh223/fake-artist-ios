@@ -111,6 +111,18 @@ class CommunicationWebSocketManager: NSObject, ObservableObject, URLSessionWebSo
                     GlobalStateManager.shared.titleChosenByQuestionMaster = title
                 }
             }
+        case "nextPlayerToDraw":
+            if let currentPlayerDrawing = dictionary["next_player"] as? String {
+                DispatchQueue.main.async {
+                    GlobalStateManager.shared.currentPlayerDrawing = currentPlayerDrawing
+                }
+            }
+        case "assignedQuestionMaster":
+            if let questionMaster = dictionary["questionMaster"] as? String {
+                DispatchQueue.main.async {
+                    GlobalStateManager.shared.questionMaster = questionMaster
+                }
+            }
         default:
             print("WebSocketManager: Received action: \(action)")
         }
