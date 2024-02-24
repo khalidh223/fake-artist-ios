@@ -14,6 +14,11 @@ struct DrawCanvasView: View {
     @State private var offset = CGSize.zero
     // State to manage the overall position of the sheet (false for partially open, true for fully open)
     @State private var isSheetOpen = false
+    @State private var numberOfDrawings = 0
+    @State private var isOverlayVisible = false
+    @State private var overlayText = ""
+
+    let maxDrawings = 2
 
     var body: some View {
         ZStack {
@@ -30,10 +35,12 @@ struct DrawCanvasView: View {
                 }
                 .gesture(DragGesture(minimumDistance: 0, coordinateSpace: .local)
                     .onChanged { value in
-                        self.handleDrawing(value: value)
+                        if self.globalStateManager.currentPlayerDrawing == self.globalStateManager.username {
+                            self.handleDrawing(value: value)
+                        }
                     }
                     .onEnded { _ in
-                        self.lastPoint = nil
+                        self.handleGestureEnded()
                     }
                 )
                 .onReceive(self.drawingWebSocketManager.$receivedDrawingData) { data in
@@ -56,16 +63,25 @@ struct DrawCanvasView: View {
                             Spacer()
                             RoundedBoxView(text: self.globalStateManager.titleChosenByQuestionMaster == "" ? "???" : self.globalStateManager.titleChosenByQuestionMaster, title: "title", backgroundColor: Color(hex: "#FDAECD")!)
                         }
-                        .padding(.horizontal, 16) // Set the horizontal padding based on CSS
-                        .padding(.top, 14) // Set the top padding based on CSS
+                        .padding(.horizontal, 16)
+                        .padding(.top, 14)
                         Spacer()
                         ScrollView {
                             Spacer()
                             Spacer()
                             VStack(alignment: .leading) {
-                                ForEach(self.globalStateManager.players, id: \.self) { player in
+                                ForEach(self.globalStateManager.players.sorted { $0.lowercased() < $1.lowercased() }, id: \.self) { player in
                                     HStack {
-                                        Image("player")
+                                        if player == self.globalStateManager.currentPlayerDrawing && player != self.globalStateManager.questionMaster {
+                                            Image(systemName: "arrow.right")
+                                                .foregroundColor(.black)
+                                                .scaleEffect(1.3)
+                                        } else {
+                                            Image(systemName: "arrow.right")
+                                                .foregroundColor(.clear) // Make the placeholder arrow transparent
+                                                .scaleEffect(1.3) // Ensure the placeholder matches the size of the actual arrow
+                                        }
+                                        Image(player != self.globalStateManager.questionMaster ? "player" : "questionMaster")
                                             .resizable()
                                             .scaledToFill()
                                             .scaleEffect(0.6)
@@ -74,12 +90,12 @@ struct DrawCanvasView: View {
                                             .clipShape(Circle())
                                             .overlay(Circle().stroke(Color.black, lineWidth: 1))
                                             .foregroundColor(.black)
-                                        
+
                                         VStack(alignment: .leading, spacing: 1) {
                                             Text(player).fontWeight(.bold)
                                             let playerConfirmedColor = self.globalStateManager.playerToConfirmedColor[player] ?? ""
                                             let colorHex = self.hexColorFor(penColor: playerConfirmedColor)
-                                            
+
                                             Rectangle()
                                                 .fill(Color(hex: colorHex) ?? Color.black)
                                                 .frame(width: 50, height: 10)
@@ -87,10 +103,10 @@ struct DrawCanvasView: View {
                                         HStack(alignment: .center, spacing: 1) {
                                             Image("one_coin")
                                                 .scaleEffect(0.8)
-                                            Text("x1")
+                                            Text("x0")
                                             Image("two_coin")
                                                 .scaleEffect(0.8)
-                                            Text("x1")
+                                            Text("x0")
                                         }
                                     }
                                 }
@@ -122,7 +138,46 @@ struct DrawCanvasView: View {
                     .animation(.linear(duration: 0.2), value: self.isSheetOpen)
                 }
             }
+
+            // Opaque overlay
+            if self.isOverlayVisible {
+                Color.white.opacity(0.5)
+                    .edgesIgnoringSafeArea(.all)
+                    .onTapGesture {
+                        // Optionally hide overlay on tap
+                        self.isOverlayVisible = false
+                    }
+
+                Text(self.overlayText)
+                    .font(.title)
+                    .foregroundColor(.black)
+                    .transition(.opacity)
+                    .animation(.easeInOut, value: self.isOverlayVisible)
+            }
         }.ignoresSafeArea(.all)
+            .onReceive(self.globalStateManager.$currentPlayerDrawing) { currentPlayerDrawing in
+                if currentPlayerDrawing == self.globalStateManager.username {
+                    self.overlayText = "Your turn to draw!"
+                } else {
+                    self.overlayText = "\(currentPlayerDrawing) is drawing"
+                }
+                self.isOverlayVisible = true
+
+                DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+                    self.isOverlayVisible = false
+                }
+            }
+    }
+
+    private func handleGestureEnded() {
+        self.lastPoint = nil
+        if self.globalStateManager.currentPlayerDrawing == self.globalStateManager.username {
+            self.numberOfDrawings += 1
+            if self.numberOfDrawings == self.maxDrawings {
+                self.canvasCommunicationWebSocketManager.sendPlayerStoppedDrawing(username: self.globalStateManager.username, gameCode: self.globalStateManager.gameCode)
+                self.numberOfDrawings = 0
+            }
+        }
     }
 
     private func hexColorFor(penColor: String) -> String {
@@ -223,6 +278,9 @@ struct DrawCanvasView_Previews: PreviewProvider {
         mockGlobalStateManager.themeChosenByQuestionMaster = "Animal"
         mockGlobalStateManager.titleChosenByQuestionMaster = "Lion"
         mockGlobalStateManager.userSelectedColorHex = "#954A13"
+        mockGlobalStateManager.currentPlayerDrawing = "hello"
+        mockGlobalStateManager.username = ""
+        mockGlobalStateManager.playerRole = "PLAYER"
         mockGlobalStateManager.players = ["hello", "goodbye", "khalid", "sup", "nope", "wow", "all", "yes"]
         mockGlobalStateManager.playerToConfirmedColor = ["hello": "black", "goodbye": "brown", "khalid": "darkblue", "sup": "darkpink", "nope": "lightgreen", "wow": "lightblue", "all": "orange", "yes": "purple"]
         return DrawCanvasView(globalStateManager: mockGlobalStateManager)

@@ -22,10 +22,13 @@ struct NewGameSheet: View {
 
                 TextField("Username", text: $username)
                     .textFieldStyle(RoundedBorderTextFieldStyle())
-                    .autocapitalization(.none)
+                    .textInputAutocapitalization(.never)
                     .disabled(isLoading)
                     .focused($isUsernameFieldFocused)
                     .padding()
+                    .onChange(of: username) { newValue in
+                        username = newValue.lowercased()
+                    }
 
                 if isLoading {
                     ProgressView()

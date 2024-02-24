@@ -22,6 +22,8 @@ class GlobalStateManager: ObservableObject {
     @Published var titleChosenByQuestionMaster = ""
     @Published var showDrawCanvasView = false
     @Published var showBlurEffect = false
+    @Published var currentPlayerDrawing = ""
+    @Published var questionMaster = ""
 
     func addPlayer(player: String) {
         players.append(player)
@@ -114,6 +116,12 @@ class GlobalStateManager: ObservableObject {
     func setTitleChosenByQuestionMaster(title: String) {
         DispatchQueue.main.async {
             self.titleChosenByQuestionMaster = title
+        }
+    }
+    
+    func setCurrentPlayerDrawing(username: String) {
+        DispatchQueue.main.async {
+            self.currentPlayerDrawing = username
         }
     }
 }
