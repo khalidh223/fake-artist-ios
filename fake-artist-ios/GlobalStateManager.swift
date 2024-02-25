@@ -24,6 +24,7 @@ class GlobalStateManager: ObservableObject {
     @Published var showBlurEffect = false
     @Published var currentPlayerDrawing = ""
     @Published var questionMaster = ""
+    @Published var stoppedGame = false
 
     func addPlayer(player: String) {
         players.append(player)

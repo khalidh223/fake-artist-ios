@@ -123,6 +123,10 @@ class CommunicationWebSocketManager: NSObject, ObservableObject, URLSessionWebSo
                     GlobalStateManager.shared.questionMaster = questionMaster
                 }
             }
+        case "setStopGame":
+            DispatchQueue.main.async {
+                GlobalStateManager.shared.stoppedGame = true
+            }
         default:
             print("WebSocketManager: Received action: \(action)")
         }

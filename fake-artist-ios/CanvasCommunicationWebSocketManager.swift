@@ -67,6 +67,14 @@ class CanvasCommunicationWebSocketManager: NSObject, ObservableObject, URLSessio
         ]
         sendCommunicationMessage(data)
     }
+    
+    func sendStopGame(gameCode: String) {
+        let data: [String: Any] = [
+            "action": "sendStopGame",
+            "gameCode": gameCode
+        ]
+        sendCommunicationMessage(data)
+    }
 
     func disconnect() {
         canvasCommunicationWebSocket?.cancel()

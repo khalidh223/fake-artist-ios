@@ -12,6 +12,7 @@
 		0C3618DC2B3F8DE80063C700 /* DrawingWebSocketManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C3618DB2B3F8DE80063C700 /* DrawingWebSocketManager.swift */; };
 		0C7A1E142B68AE3600EEF7A1 /* DrawingData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C7A1E132B68AE3600EEF7A1 /* DrawingData.swift */; };
 		0C7A1E1A2B81940500EEF7A1 /* DrawCanvasView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C7A1E192B81940500EEF7A1 /* DrawCanvasView.swift */; };
+		0C7FAF922B8AC49800414335 /* VoteForPlayersOverlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C7FAF912B8AC49800414335 /* VoteForPlayersOverlayView.swift */; };
 		0C8B1F802B3FBFEA00D250CB /* GameCodeDisplay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C8B1F7F2B3FBFEA00D250CB /* GameCodeDisplay.swift */; };
 		0C8B1F832B3FE6E100D250CB /* GlobalStateManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C8B1F822B3FE6E100D250CB /* GlobalStateManager.swift */; };
 		0CC27AE92B3D260400F88012 /* OutlineButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CC27AE82B3D260400F88012 /* OutlineButtonStyle.swift */; };
@@ -57,6 +58,7 @@
 		0C3618DB2B3F8DE80063C700 /* DrawingWebSocketManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrawingWebSocketManager.swift; sourceTree = "<group>"; };
 		0C7A1E132B68AE3600EEF7A1 /* DrawingData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrawingData.swift; sourceTree = "<group>"; };
 		0C7A1E192B81940500EEF7A1 /* DrawCanvasView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrawCanvasView.swift; sourceTree = "<group>"; };
+		0C7FAF912B8AC49800414335 /* VoteForPlayersOverlayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VoteForPlayersOverlayView.swift; sourceTree = "<group>"; };
 		0C8B1F7F2B3FBFEA00D250CB /* GameCodeDisplay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameCodeDisplay.swift; sourceTree = "<group>"; };
 		0C8B1F812B3FD6EE00D250CB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		0C8B1F822B3FE6E100D250CB /* GlobalStateManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlobalStateManager.swift; sourceTree = "<group>"; };
@@ -125,6 +127,7 @@
 				0CCA70002B53730D0013F21C /* CardView.swift */,
 				0CCA70022B53B7660013F21C /* PickTitleAndThemeView.swift */,
 				0C7A1E192B81940500EEF7A1 /* DrawCanvasView.swift */,
+				0C7FAF912B8AC49800414335 /* VoteForPlayersOverlayView.swift */,
 			);
 			path = common;
 			sourceTree = "<group>";
@@ -346,6 +349,7 @@
 				0CE5C4EC2B3804C6009B4F08 /* fake_artist_iosApp.swift in Sources */,
 				0CCA6FF72B43C6EB0013F21C /* EnvironmentError.swift in Sources */,
 				0CCA70032B53B7660013F21C /* PickTitleAndThemeView.swift in Sources */,
+				0C7FAF922B8AC49800414335 /* VoteForPlayersOverlayView.swift in Sources */,
 				0C3618DC2B3F8DE80063C700 /* DrawingWebSocketManager.swift in Sources */,
 				0CCA70012B53730D0013F21C /* CardView.swift in Sources */,
 				0CCA6FFB2B47BD2A0013F21C /* RoleDisplayView.swift in Sources */,
