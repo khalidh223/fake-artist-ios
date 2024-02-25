@@ -49,7 +49,6 @@ class CanvasCommunicationWebSocketManager: NSObject, ObservableObject, URLSessio
         }
     }
     
-    
     func sendRequestRole(gameCode: String, playerConnectionId: String) {
         let data: [String: Any] = [
             "action": "requestRole",
@@ -72,6 +71,16 @@ class CanvasCommunicationWebSocketManager: NSObject, ObservableObject, URLSessio
         let data: [String: Any] = [
             "action": "sendStopGame",
             "gameCode": gameCode
+        ]
+        sendCommunicationMessage(data)
+    }
+    
+    func sendVoteForFakeArtist(votedFor: String, username: String, gameCode: String) {
+        let data: [String: Any] = [
+            "action": "sendVoteForFakeArtist",
+            "gameCode": gameCode,
+            "username": username,
+            "votedForPlayer": votedFor
         ]
         sendCommunicationMessage(data)
     }

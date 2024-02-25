@@ -25,6 +25,10 @@ class GlobalStateManager: ObservableObject {
     @Published var currentPlayerDrawing = ""
     @Published var questionMaster = ""
     @Published var stoppedGame = false
+    @Published var votesForFakeArtist: [String: Int] = [:]
+    @Published var showVoteFakeArtistView = false
+    @Published var votingCountdownStep = 0
+    @Published var selectedPlayer: String? = nil
 
     func addPlayer(player: String) {
         players.append(player)
@@ -123,6 +127,16 @@ class GlobalStateManager: ObservableObject {
     func setCurrentPlayerDrawing(username: String) {
         DispatchQueue.main.async {
             self.currentPlayerDrawing = username
+        }
+    }
+    
+    func incrementVoteForPlayer(username: String) {
+        DispatchQueue.main.async {
+            if let currentVotes = self.votesForFakeArtist[username] {
+                self.votesForFakeArtist[username] = currentVotes + 1
+            } else {
+                self.votesForFakeArtist[username] = 1
+            }
         }
     }
 }
