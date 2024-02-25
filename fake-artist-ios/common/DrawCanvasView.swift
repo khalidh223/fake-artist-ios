@@ -17,7 +17,7 @@ struct DrawCanvasView: View {
     @State private var numberOfDrawings = 0
     @State private var numberOfRounds = 0
     @State private var isCurrentPlayerDrawingOverlayVisible = false
-    @State private var isStoppedGameOverlayVisible = false
+    @State private var isViewVotingButtonVisible = false
     @State private var overlayText = ""
 
     let maxDrawings = 2
@@ -35,20 +35,32 @@ struct DrawCanvasView: View {
                         path.addLine(to: CGPoint(x: drawingPath.endX, y: drawingPath.endY))
                         context.stroke(path, with: .color(drawingPath.color), lineWidth: 4)
                     }
-                }
-                .gesture(DragGesture(minimumDistance: 0, coordinateSpace: .local)
-                    .onChanged { value in
-                        if self.globalStateManager.currentPlayerDrawing == self.globalStateManager.username {
-                            self.handleDrawing(value: value)
+                }.ignoresSafeArea(.all)
+                    .gesture(DragGesture(minimumDistance: 0, coordinateSpace: .local)
+                        .onChanged { value in
+                            if self.globalStateManager.currentPlayerDrawing == self.globalStateManager.username, !self.globalStateManager.stoppedGame {
+                                self.handleDrawing(value: value)
+                            }
                         }
+                        .onEnded { _ in
+                            self.handleGestureEnded()
+                        }
+                    )
+                    .onReceive(self.drawingWebSocketManager.$receivedDrawingData) { data in
+                        guard let data = data else { return }
+                        self.addPath(from: data)
                     }
-                    .onEnded { _ in
-                        self.handleGestureEnded()
+            }.ignoresSafeArea(.all)
+
+            if self.isViewVotingButtonVisible {
+                VStack {
+                    HomeButton(text: "View Voting") {
+                        self.globalStateManager.showVoteFakeArtistView = true
                     }
-                )
-                .onReceive(self.drawingWebSocketManager.$receivedDrawingData) { data in
-                    guard let data = data else { return }
-                    self.addPath(from: data)
+                    .padding()
+                    .cornerRadius(8)
+                    .padding(.top, 60)
+                    Spacer()
                 }
             }
 
@@ -140,23 +152,28 @@ struct DrawCanvasView: View {
                     )
                     .animation(.linear(duration: 0.2), value: self.isSheetOpen)
                 }
-            }
+            }.ignoresSafeArea(.all)
 
             // Opaque overlay
             if self.isCurrentPlayerDrawingOverlayVisible {
-                Color.white.opacity(0.5)
-                    .edgesIgnoringSafeArea(.all)
-                    .onTapGesture {
-                        self.isCurrentPlayerDrawingOverlayVisible = false
-                    }
+                ZStack {
+                    Color.white.opacity(0.5)
+                        .edgesIgnoringSafeArea(.all)
+                        .onTapGesture {
+                            self.isCurrentPlayerDrawingOverlayVisible = false
+                        }
 
-                Text(self.overlayText)
-                    .font(.title)
-                    .foregroundColor(.black)
-                    .transition(.opacity)
-                    .animation(.easeInOut, value: self.isCurrentPlayerDrawingOverlayVisible)
-            } else if self.isStoppedGameOverlayVisible {
-                VoteForPlayersOverlayView().transition(.opacity)
+                    Text(self.overlayText)
+                        .font(.title)
+                        .foregroundColor(.black)
+                        .transition(.opacity)
+                        .animation(.easeInOut, value: self.isCurrentPlayerDrawingOverlayVisible)
+                }.ignoresSafeArea(.all)
+            } else if self.globalStateManager.showVoteFakeArtistView {
+                VoteForPlayersOverlayView()
+                    .background(VisualEffectView(effect: UIBlurEffect(style: .regular)))
+                    .transition(.scale.combined(with: .opacity))
+                    .ignoresSafeArea(.all)
             }
         }.ignoresSafeArea(.all)
             .onReceive(self.globalStateManager.$currentPlayerDrawing) { currentPlayerDrawing in
@@ -172,7 +189,8 @@ struct DrawCanvasView: View {
                 }
             }
             .onReceive(self.globalStateManager.$stoppedGame) {
-                stoppedGame in if stoppedGame == true { self.isStoppedGameOverlayVisible = true
+                stoppedGame in if stoppedGame == true { self.isViewVotingButtonVisible = true
+                    self.globalStateManager.showVoteFakeArtistView = true
                 }
             }
     }
@@ -181,7 +199,7 @@ struct DrawCanvasView: View {
         self.lastPoint = nil
 
         let sortedPlayers = self.globalStateManager.players.sorted { $0.lowercased() < $1.lowercased() }.filter { player in player != self.globalStateManager.questionMaster }
-        var isLastSortedPlayerCurrentlyDrawing = sortedPlayers.last == self.globalStateManager.currentPlayerDrawing && sortedPlayers.last == self.globalStateManager.username
+        let isLastSortedPlayerCurrentlyDrawing = sortedPlayers.last == self.globalStateManager.currentPlayerDrawing && sortedPlayers.last == self.globalStateManager.username
         if self.numberOfDrawings == self.maxDrawings - 1 && self.numberOfRounds == self.maxRounds - 1 && isLastSortedPlayerCurrentlyDrawing {
             self.canvasCommunicationWebSocketManager.sendStopGame(gameCode: self.globalStateManager.gameCode)
             self.numberOfRounds = 0
@@ -292,6 +310,7 @@ struct DrawingPath {
 struct DrawCanvasView_Previews: PreviewProvider {
     static var previews: some View {
         let mockGlobalStateManager = GlobalStateManager()
+        mockGlobalStateManager.showVoteFakeArtistView = true
         mockGlobalStateManager.themeChosenByQuestionMaster = "Animal"
         mockGlobalStateManager.titleChosenByQuestionMaster = "Lion"
         mockGlobalStateManager.userSelectedColorHex = "#954A13"

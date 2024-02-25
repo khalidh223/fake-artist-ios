@@ -127,6 +127,12 @@ class CommunicationWebSocketManager: NSObject, ObservableObject, URLSessionWebSo
             DispatchQueue.main.async {
                 GlobalStateManager.shared.stoppedGame = true
             }
+        case "votedForPlayerToBeFakeArtist":
+            if let votedForPlayer = dictionary["player"] as? String {
+                DispatchQueue.main.async {
+                    GlobalStateManager.shared.incrementVoteForPlayer(username: votedForPlayer)
+                }
+            }
         default:
             print("WebSocketManager: Received action: \(action)")
         }
