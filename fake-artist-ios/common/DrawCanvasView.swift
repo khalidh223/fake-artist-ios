@@ -15,10 +15,13 @@ struct DrawCanvasView: View {
     // State to manage the overall position of the sheet (false for partially open, true for fully open)
     @State private var isSheetOpen = false
     @State private var numberOfDrawings = 0
-    @State private var isOverlayVisible = false
+    @State private var numberOfRounds = 0
+    @State private var isCurrentPlayerDrawingOverlayVisible = false
+    @State private var isStoppedGameOverlayVisible = false
     @State private var overlayText = ""
 
     let maxDrawings = 2
+    let maxRounds = 2
 
     var body: some View {
         ZStack {
@@ -140,19 +143,20 @@ struct DrawCanvasView: View {
             }
 
             // Opaque overlay
-            if self.isOverlayVisible {
+            if self.isCurrentPlayerDrawingOverlayVisible {
                 Color.white.opacity(0.5)
                     .edgesIgnoringSafeArea(.all)
                     .onTapGesture {
-                        // Optionally hide overlay on tap
-                        self.isOverlayVisible = false
+                        self.isCurrentPlayerDrawingOverlayVisible = false
                     }
 
                 Text(self.overlayText)
                     .font(.title)
                     .foregroundColor(.black)
                     .transition(.opacity)
-                    .animation(.easeInOut, value: self.isOverlayVisible)
+                    .animation(.easeInOut, value: self.isCurrentPlayerDrawingOverlayVisible)
+            } else if self.isStoppedGameOverlayVisible {
+                VoteForPlayersOverlayView().transition(.opacity)
             }
         }.ignoresSafeArea(.all)
             .onReceive(self.globalStateManager.$currentPlayerDrawing) { currentPlayerDrawing in
@@ -161,21 +165,34 @@ struct DrawCanvasView: View {
                 } else {
                     self.overlayText = "\(currentPlayerDrawing) is drawing"
                 }
-                self.isOverlayVisible = true
+                self.isCurrentPlayerDrawingOverlayVisible = true
 
                 DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
-                    self.isOverlayVisible = false
+                    self.isCurrentPlayerDrawingOverlayVisible = false
+                }
+            }
+            .onReceive(self.globalStateManager.$stoppedGame) {
+                stoppedGame in if stoppedGame == true { self.isStoppedGameOverlayVisible = true
                 }
             }
     }
 
     private func handleGestureEnded() {
         self.lastPoint = nil
+
+        let sortedPlayers = self.globalStateManager.players.sorted { $0.lowercased() < $1.lowercased() }.filter { player in player != self.globalStateManager.questionMaster }
+        var isLastSortedPlayerCurrentlyDrawing = sortedPlayers.last == self.globalStateManager.currentPlayerDrawing && sortedPlayers.last == self.globalStateManager.username
+        if self.numberOfDrawings == self.maxDrawings - 1 && self.numberOfRounds == self.maxRounds - 1 && isLastSortedPlayerCurrentlyDrawing {
+            self.canvasCommunicationWebSocketManager.sendStopGame(gameCode: self.globalStateManager.gameCode)
+            self.numberOfRounds = 0
+        }
+
         if self.globalStateManager.currentPlayerDrawing == self.globalStateManager.username {
             self.numberOfDrawings += 1
-            if self.numberOfDrawings == self.maxDrawings {
+            if self.numberOfDrawings == self.maxDrawings && self.numberOfRounds != self.maxRounds {
                 self.canvasCommunicationWebSocketManager.sendPlayerStoppedDrawing(username: self.globalStateManager.username, gameCode: self.globalStateManager.gameCode)
                 self.numberOfDrawings = 0
+                self.numberOfRounds += 1
             }
         }
     }
