@@ -118,10 +118,10 @@ struct DrawCanvasView: View {
                                         HStack(alignment: .center, spacing: 1) {
                                             Image("one_coin")
                                                 .scaleEffect(0.8)
-                                            Text("x0")
+                                            Text("x\(globalStateManager.numberOfOnePoints[player] ?? 0)")
                                             Image("two_coin")
                                                 .scaleEffect(0.8)
-                                            Text("x0")
+                                            Text("x\(globalStateManager.numberOfTwoPoints[player] ?? 0)")
                                         }
                                     }
                                 }

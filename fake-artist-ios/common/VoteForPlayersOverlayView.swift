@@ -6,71 +6,91 @@ struct VoteForPlayersOverlayView: View {
 
     @State private var displayText = "On the count of three, pick the fake artist!"
     @State private var isVotingAllowed = true
+    @State private var fadeInFakeArtist = false
+    @State private var showPointsDistributionView = false
 
     var body: some View {
         if globalStateManager.showVoteFakeArtistView {
-            let columns: [GridItem] = Array(repeating: .init(.flexible()), count: 3)
-
-            VStack {
-                Spacer()
+            if !showPointsDistributionView {
+                let columns: [GridItem] = Array(repeating: .init(.flexible()), count: 3)
+                
                 VStack {
-                    HStack {
-                        if globalStateManager.questionMaster != globalStateManager.username {
-                            Image("questionMaster")
-                                .resizable()
-                                .scaledToFit()
-                                .frame(height: 60)
+                    Spacer()
+                    VStack {
+                        HStack {
+                            if globalStateManager.questionMaster != globalStateManager.username {
+                                Image("questionMaster")
+                                    .resizable()
+                                    .scaledToFit()
+                                    .frame(height: 60)
+                            }
+                            Text(displayText)
+                                .fontWeight(.bold)
+                                .lineLimit(1)
+                                .font(.system(size: 18))
+                                .minimumScaleFactor(0.5)
                         }
-                        Text(displayText)
-                            .fontWeight(.bold)
-                            .lineLimit(1)
-                            .font(.system(size: 18))
-                            .minimumScaleFactor(0.5)
-                    }
-                    .padding(.bottom, 10)
-                    .padding(.horizontal, 10)
-                    .padding(.top, 20)
-
-                    if globalStateManager.players.count > 9 {
-                        ScrollView {
+                        .padding(.bottom, 10)
+                        .padding(.horizontal, 10)
+                        .padding(.top, 20)
+                        
+                        if globalStateManager.players.count > 9 {
+                            ScrollView {
+                                LazyVGrid(columns: columns, spacing: 20) {
+                                    ForEach(globalStateManager.players.filter { $0 != globalStateManager.questionMaster }, id: \.self) { player in
+                                        playerView(player: player)
+                                    }
+                                }
+                            }
+                        } else {
                             LazyVGrid(columns: columns, spacing: 20) {
                                 ForEach(globalStateManager.players.filter { $0 != globalStateManager.questionMaster }, id: \.self) { player in
                                     playerView(player: player)
                                 }
                             }
                         }
-                    } else {
-                        LazyVGrid(columns: columns, spacing: 20) {
-                            ForEach(globalStateManager.players.filter { $0 != globalStateManager.questionMaster }, id: \.self) { player in
-                                playerView(player: player)
-                            }
+                        if globalStateManager.votingCountdownStep > 3 && !fadeInFakeArtist {
+                            HomeButton(text: "VIEW CANVAS", action: {
+                                self.globalStateManager.showVoteFakeArtistView = false
+                            })
+                            .padding()
                         }
                     }
-                    if globalStateManager.votingCountdownStep > 3 {
-                        HomeButton(text: "VIEW CANVAS", action: {
-                            self.globalStateManager.showVoteFakeArtistView = false
-                        })
-                        .padding()
+                    .background(Color.white)
+                    .cornerRadius(20)
+                    .shadow(radius: 10)
+                    .padding(EdgeInsets(top: 0, leading: 20, bottom: 0, trailing: 20))
+                    Spacer()
+                }
+                .onChange(of: globalStateManager.fakeArtist) { _ in
+                    fadeInFakeArtist = !globalStateManager.fakeArtist.isEmpty
+                    if fadeInFakeArtist {
+                        displayText = "The fake artist is..."
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 5) {
+                            self.showPointsDistributionView = true
+                        }
                     }
                 }
-                .background(Color.white)
-                .cornerRadius(20)
-                .shadow(radius: 10)
-                .padding(EdgeInsets(top: 0, leading: 20, bottom: 0, trailing: 20))
-                Spacer()
-            }
-            .onAppear {
-                if globalStateManager.username == globalStateManager.questionMaster {
-                    displayText = "Players will now vote for the fake artist!"
-                    isVotingAllowed = false
-                } else if globalStateManager.votingCountdownStep < 4 {
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
-                        updateCountdown()
+                .onAppear {
+                    if globalStateManager.username == globalStateManager.questionMaster {
+                        displayText = "Players will now vote for the fake artist!"
+                        isVotingAllowed = false
                     }
-                } else {
-                    displayText = "3, 2, 1, pick!"
-                    isVotingAllowed = false
+                    
+                    if globalStateManager.votingCountdownStep < 4 {
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+                            updateCountdown()
+                        }
+                    } else {
+                        displayText = "3, 2, 1, pick!"
+                        isVotingAllowed = false
+                    }
                 }
+            } else {
+                PointsDistributionView()
+                    .background(VisualEffectView(effect: UIBlurEffect(style: .regular)))
+                    .transition(.scale.combined(with: .opacity))
+                    .ignoresSafeArea(.all)
             }
         }
     }
@@ -84,10 +104,18 @@ struct VoteForPlayersOverlayView: View {
         }) {
             VStack {
                 Text(String(globalStateManager.votesForFakeArtist[player] ?? 0))
-                Image("player")
-                    .resizable()
-                    .scaledToFit()
-                    .frame(height: 90)
+                if fadeInFakeArtist && player == globalStateManager.fakeArtist {
+                    Image("fakeArtist")
+                        .resizable()
+                        .scaledToFit()
+                        .frame(height: 90)
+                        .transition(.opacity)
+                } else {
+                    Image("player")
+                        .resizable()
+                        .scaledToFit()
+                        .frame(height: 90)
+                }
                 Text(player.count > 8 ? "\(player.prefix(5))..." : player)
                     .fontWeight(.bold)
                     .padding(.vertical, 1)
