@@ -29,6 +29,9 @@ class GlobalStateManager: ObservableObject {
     @Published var showVoteFakeArtistView = false
     @Published var votingCountdownStep = 0
     @Published var selectedPlayer: String? = nil
+    @Published var fakeArtist = ""
+    @Published var numberOfTwoPoints: [String: Int] = [:]
+    @Published var numberOfOnePoints: [String: Int] = [:]
 
     func addPlayer(player: String) {
         players.append(player)
@@ -136,6 +139,26 @@ class GlobalStateManager: ObservableObject {
                 self.votesForFakeArtist[username] = currentVotes + 1
             } else {
                 self.votesForFakeArtist[username] = 1
+            }
+        }
+    }
+    
+    func incrementNumberOfTwoPoints(username: String) {
+        DispatchQueue.main.async {
+            if let currentNumberOfTwoPoints = self.numberOfTwoPoints[username] {
+                self.numberOfTwoPoints[username] = currentNumberOfTwoPoints + 1
+            } else {
+                self.numberOfTwoPoints[username] = 1
+            }
+        }
+    }
+    
+    func incrementNumberOfOnePoints(username: String) {
+        DispatchQueue.main.async {
+            if let currentNumberOfOnePoints = self.numberOfOnePoints[username] {
+                self.numberOfOnePoints[username] = currentNumberOfOnePoints + 1
+            } else {
+                self.numberOfOnePoints[username] = 1
             }
         }
     }
