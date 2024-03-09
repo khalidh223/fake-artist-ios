@@ -33,7 +33,7 @@ struct RoleDisplayView: View {
     @State private var title = ""
 
     var body: some View {
-        if !globalStateManager.showDrawCanvasView {
+        if !globalStateManager.showDrawCanvasView || globalStateManager.showRoleDisplayViewAfterReset {
             ZStack {
                 if !showWaitingText {
                     VStack {
@@ -171,6 +171,21 @@ struct RoleDisplayView: View {
                 if show {
                     // Hide the blur effect
                     globalStateManager.showBlurEffect = false
+                }
+            }
+            .onChange(of: globalStateManager.playerRole) { _ in
+                if globalStateManager.playerRole != "" {
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+                        withAnimation {
+                            globalStateManager.showRoleDisplayViewAfterReset = true
+                        }
+                    }
+                }
+            }.onReceive(self.globalStateManager.$allPlayersResettedRoundState) {
+                allPlayersResettedRoundState in if allPlayersResettedRoundState == true {
+                    showCardView = false
+                    showWaitingText = false
+                    showConfirmationView = false
                 }
             }
         } else {

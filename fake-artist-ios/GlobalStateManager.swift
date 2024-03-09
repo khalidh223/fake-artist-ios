@@ -32,6 +32,29 @@ class GlobalStateManager: ObservableObject {
     @Published var fakeArtist = ""
     @Published var numberOfTwoPoints: [String: Int] = [:]
     @Published var numberOfOnePoints: [String: Int] = [:]
+    @Published var showRoleDisplayViewAfterReset = false
+    @Published var allPlayersResettedRoundState = false
+    
+    func resetGlobalState() {
+        playerRole = ""
+        colorToUsernameMap.removeAll()
+        userSelectedColorHex = ""
+        playerToConfirmedColor.removeAll()
+        allPlayersConfirmedColor = false
+        themeChosenByQuestionMaster = ""
+        titleChosenByQuestionMaster = ""
+        showDrawCanvasView = false
+        showBlurEffect = false
+        currentPlayerDrawing = ""
+        stoppedGame = false
+        votesForFakeArtist.removeAll()
+        showVoteFakeArtistView = false
+        votingCountdownStep = 0
+        selectedPlayer = nil
+        fakeArtist = ""
+        questionMaster = ""
+        allPlayersResettedRoundState = false
+    }
 
     func addPlayer(player: String) {
         players.append(player)

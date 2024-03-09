@@ -139,6 +139,15 @@ class CommunicationWebSocketManager: NSObject, ObservableObject, URLSessionWebSo
                     GlobalStateManager.shared.fakeArtist = fakeArtist
                 }
             }
+        case "allPlayersResettedRoundState":
+            GlobalStateManager.shared.resetGlobalState()
+            GlobalStateManager.shared.allPlayersResettedRoundState = true
+        case "getUsernameOfQuestionMaster":
+            if let questionMaster = dictionary["username"] as? String {
+                DispatchQueue.main.async {
+                    GlobalStateManager.shared.questionMaster = questionMaster
+                }
+            }
         default:
             print("WebSocketManager: Received action: \(action)")
         }

@@ -84,6 +84,16 @@ class CanvasCommunicationWebSocketManager: NSObject, ObservableObject, URLSessio
         ]
         sendCommunicationMessage(data)
     }
+    
+    func sendResetRoundStateForPlayer(gameCode: String, username: String, currentQuestionMaster: String) {
+        let data: [String: Any] = [
+            "action": "resetRoundStateForPlayer",
+            "gameCode": gameCode,
+            "username": username,
+            "currentQuestionMaster": currentQuestionMaster
+        ]
+        sendCommunicationMessage(data)
+    }
 
     func disconnect() {
         canvasCommunicationWebSocket?.cancel()

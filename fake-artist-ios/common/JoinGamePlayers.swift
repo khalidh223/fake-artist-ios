@@ -95,11 +95,14 @@ struct JoinGamePlayers: View {
                 globalStateManager.showBlurEffect = true
             }
 
-            // Delay the presentation of the role view
-            DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
-                withAnimation {
-                    isRolePresented = true
-                }
+            withAnimation {
+                isRolePresented = true
+            }
+        }
+        .onReceive(self.globalStateManager.$allPlayersResettedRoundState) {
+            allPlayersResettedRoundState in if allPlayersResettedRoundState == true {
+                isRolePresented = false
+                globalStateManager.showBlurEffect = true
             }
         }
     }
