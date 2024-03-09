@@ -193,6 +193,13 @@ struct DrawCanvasView: View {
                     self.globalStateManager.showVoteFakeArtistView = true
                 }
             }
+            .onReceive(self.globalStateManager.$allPlayersResettedRoundState) {
+                allPlayersResettedRoundState in if allPlayersResettedRoundState == true {
+                    numberOfDrawings = 0
+                    numberOfRounds = 0
+                    paths.removeAll()
+                }
+            }
     }
 
     private func handleGestureEnded() {

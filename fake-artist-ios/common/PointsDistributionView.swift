@@ -2,50 +2,68 @@ import SwiftUI
 
 struct PointsDistributionView: View {
     @ObservedObject var globalStateManager = GlobalStateManager.shared
+    @ObservedObject var canvasCommunicationWebSocketManager = CanvasCommunicationWebSocketManager.shared
     @State var fakeArtistAndQuestionMasterWins = false
     @State var playerWins = false
+    @State var showLoadingNewRoundView = false
 
     var body: some View {
-        VStack {
-            Spacer()
+        if !showLoadingNewRoundView {
             VStack {
-                Text(fakeArtistAndQuestionMasterWins ? "Fake Artist and Question Master win!" : "Players win!")
-                    .fontWeight(.bold)
-                    .lineLimit(1)
-                    .font(.system(size: 18))
-                    .padding(.vertical, 20)
-                    .frame(maxWidth: .infinity)
+                Spacer()
+                VStack {
+                    Text(fakeArtistAndQuestionMasterWins ? "Fake Artist and Question Master win!" : "Players win!")
+                        .fontWeight(.bold)
+                        .lineLimit(1)
+                        .font(.system(size: 18))
+                        .padding(.vertical, 20)
+                        .frame(maxWidth: .infinity)
 
-                if fakeArtistAndQuestionMasterWins {
-                    HStack(spacing: 20) {
-                        fakeArtistAndQuestionMasterView()
+                    if fakeArtistAndQuestionMasterWins {
+                        HStack(spacing: 20) {
+                            fakeArtistAndQuestionMasterView()
+                        }
+                    } else if playerWins {
+                        playerWinsSection()
                     }
-                } else if playerWins {
-                    playerWinsSection()
-                }
 
-                HomeButton(text: "OKAY", action: {})
+                    HomeButton(text: "OKAY", action: {
+                        canvasCommunicationWebSocketManager.sendResetRoundStateForPlayer(gameCode: globalStateManager.gameCode, username: globalStateManager.username, currentQuestionMaster: globalStateManager.questionMaster)
+                        showLoadingNewRoundView = true
+
+                    })
                     .padding(.top, 20)
+                }
+                .padding()
+                .background(Color.white)
+                .cornerRadius(20)
+                .shadow(radius: 10)
+                Spacer()
             }
-            .padding()
-            .background(Color.white)
-            .cornerRadius(20)
-            .shadow(radius: 10)
-            Spacer()
-        }
-        .padding(.horizontal)
-        .onAppear {
-            determineWinner()
-            if fakeArtistAndQuestionMasterWins {
-                globalStateManager.incrementNumberOfTwoPoints(username: globalStateManager.fakeArtist)
-                globalStateManager.incrementNumberOfTwoPoints(username: globalStateManager.questionMaster)
-            }
+            .padding(.horizontal)
+            .onAppear {
+                determineWinner()
+                if fakeArtistAndQuestionMasterWins {
+                    globalStateManager.incrementNumberOfTwoPoints(username: globalStateManager.fakeArtist)
+                    globalStateManager.incrementNumberOfTwoPoints(username: globalStateManager.questionMaster)
+                }
 
-            if playerWins {
-                globalStateManager.players.filter { $0 != globalStateManager.questionMaster && $0 != globalStateManager.fakeArtist }.forEach { player in
-                    globalStateManager.incrementNumberOfOnePoints(username: player)
+                if playerWins {
+                    globalStateManager.players.filter { $0 != globalStateManager.questionMaster && $0 != globalStateManager.fakeArtist }.forEach { player in
+                        globalStateManager.incrementNumberOfOnePoints(username: player)
+                    }
                 }
             }
+            .onReceive(self.globalStateManager.$allPlayersResettedRoundState) {
+                allPlayersResettedRoundState in if allPlayersResettedRoundState == true {
+                    showLoadingNewRoundView = false
+                }
+            }
+        } else {
+            LoadingNewRoundView()
+                .background(VisualEffectView(effect: UIBlurEffect(style: .regular)))
+                .transition(.scale.combined(with: .opacity))
+                .ignoresSafeArea(.all)
         }
     }
 

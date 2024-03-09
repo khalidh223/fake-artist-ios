@@ -14,6 +14,7 @@
 		0C7A1E1A2B81940500EEF7A1 /* DrawCanvasView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C7A1E192B81940500EEF7A1 /* DrawCanvasView.swift */; };
 		0C7FAF922B8AC49800414335 /* VoteForPlayersOverlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C7FAF912B8AC49800414335 /* VoteForPlayersOverlayView.swift */; };
 		0C7FAF942B93E77100414335 /* PointsDistributionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C7FAF932B93E77100414335 /* PointsDistributionView.swift */; };
+		0C7FAF962B942CC300414335 /* LoadingNewRoundView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C7FAF952B942CC300414335 /* LoadingNewRoundView.swift */; };
 		0C8B1F802B3FBFEA00D250CB /* GameCodeDisplay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C8B1F7F2B3FBFEA00D250CB /* GameCodeDisplay.swift */; };
 		0C8B1F832B3FE6E100D250CB /* GlobalStateManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C8B1F822B3FE6E100D250CB /* GlobalStateManager.swift */; };
 		0CC27AE92B3D260400F88012 /* OutlineButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CC27AE82B3D260400F88012 /* OutlineButtonStyle.swift */; };
@@ -61,6 +62,7 @@
 		0C7A1E192B81940500EEF7A1 /* DrawCanvasView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrawCanvasView.swift; sourceTree = "<group>"; };
 		0C7FAF912B8AC49800414335 /* VoteForPlayersOverlayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VoteForPlayersOverlayView.swift; sourceTree = "<group>"; };
 		0C7FAF932B93E77100414335 /* PointsDistributionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PointsDistributionView.swift; sourceTree = "<group>"; };
+		0C7FAF952B942CC300414335 /* LoadingNewRoundView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingNewRoundView.swift; sourceTree = "<group>"; };
 		0C8B1F7F2B3FBFEA00D250CB /* GameCodeDisplay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameCodeDisplay.swift; sourceTree = "<group>"; };
 		0C8B1F812B3FD6EE00D250CB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		0C8B1F822B3FE6E100D250CB /* GlobalStateManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlobalStateManager.swift; sourceTree = "<group>"; };
@@ -131,6 +133,7 @@
 				0C7A1E192B81940500EEF7A1 /* DrawCanvasView.swift */,
 				0C7FAF912B8AC49800414335 /* VoteForPlayersOverlayView.swift */,
 				0C7FAF932B93E77100414335 /* PointsDistributionView.swift */,
+				0C7FAF952B942CC300414335 /* LoadingNewRoundView.swift */,
 			);
 			path = common;
 			sourceTree = "<group>";
@@ -337,6 +340,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				0C7A1E1A2B81940500EEF7A1 /* DrawCanvasView.swift in Sources */,
+				0C7FAF962B942CC300414335 /* LoadingNewRoundView.swift in Sources */,
 				0C8B1F832B3FE6E100D250CB /* GlobalStateManager.swift in Sources */,
 				0CC27AED2B3DF92A00F88012 /* JoinGameSheet.swift in Sources */,
 				0CCA6FFF2B4A76410013F21C /* QuestionMasterSayingThemeView.swift in Sources */,
