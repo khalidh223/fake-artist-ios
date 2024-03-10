@@ -2,9 +2,11 @@ import SwiftUI
 
 struct HomeButton: View {
     var text: String
+    var isDisabled: Bool = false;
     var action: () -> Void
 
     var body: some View {
+        let color = isDisabled ? Color(red: 200.0/255.0, green: 200.0/255.0, blue: 200.0/255.0) : Color(red: 241.0 / 255.0, green: 10.0 / 255.0, blue: 126.0 / 255.0)
         Button(action: action) {
             Rectangle()
                 .foregroundColor(Color.black.opacity(0.001))
@@ -13,8 +15,10 @@ struct HomeButton: View {
                     Text(text)
                 )
         }
-        .buttonStyle(OutlineButtonStyle(borderColor: Color(red: 241.0 / 255.0, green: 10.0 / 255.0, blue: 126.0 / 255.0), textColor: Color(red: 241.0 / 255.0, green: 10.0 / 255.0, blue: 126.0 / 255.0), borderWidth: 1))
+        .buttonStyle(OutlineButtonStyle(borderColor: color, textColor: color, borderWidth: 1))
         .padding(.bottom)
+        .opacity(isDisabled ? 0.5 : 1.0)
+        .disabled(isDisabled)
     }
 }
 

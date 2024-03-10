@@ -8,12 +8,15 @@ struct VoteForPlayersOverlayView: View {
     @State private var isVotingAllowed = true
     @State private var fadeInFakeArtist = false
     @State private var showPointsDistributionView = false
+    @State private var fakeArtistHasOpportunityToGuess = false
+    @State var fakeArtistAndQuestionMasterWins = false
+    @State var playerWins = false
 
     var body: some View {
         if globalStateManager.showVoteFakeArtistView {
-            if !showPointsDistributionView {
+            if !showPointsDistributionView && !fakeArtistHasOpportunityToGuess {
                 let columns: [GridItem] = Array(repeating: .init(.flexible()), count: 3)
-                
+
                 VStack {
                     Spacer()
                     VStack {
@@ -33,7 +36,7 @@ struct VoteForPlayersOverlayView: View {
                         .padding(.bottom, 10)
                         .padding(.horizontal, 10)
                         .padding(.top, 20)
-                        
+
                         if globalStateManager.players.count > 9 {
                             ScrollView {
                                 LazyVGrid(columns: columns, spacing: 20) {
@@ -66,8 +69,15 @@ struct VoteForPlayersOverlayView: View {
                     fadeInFakeArtist = !globalStateManager.fakeArtist.isEmpty
                     if fadeInFakeArtist {
                         displayText = "The fake artist is..."
-                        DispatchQueue.main.asyncAfter(deadline: .now() + 5) {
-                            self.showPointsDistributionView = true
+                        determineWinner()
+                        if fakeArtistAndQuestionMasterWins {
+                            DispatchQueue.main.asyncAfter(deadline: .now() + 5) {
+                                self.showPointsDistributionView = true
+                            }
+                        } else if playerWins {
+                            DispatchQueue.main.asyncAfter(deadline: .now() + 5) {
+                                self.fakeArtistHasOpportunityToGuess = true
+                            }
                         }
                     }
                 }
@@ -76,7 +86,7 @@ struct VoteForPlayersOverlayView: View {
                         displayText = "Players will now vote for the fake artist!"
                         isVotingAllowed = false
                     }
-                    
+
                     if globalStateManager.votingCountdownStep < 4 {
                         DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
                             updateCountdown()
@@ -86,12 +96,34 @@ struct VoteForPlayersOverlayView: View {
                         isVotingAllowed = false
                     }
                 }
-            } else {
+            } else if showPointsDistributionView {
                 PointsDistributionView()
                     .background(VisualEffectView(effect: UIBlurEffect(style: .regular)))
                     .transition(.scale.combined(with: .opacity))
                     .ignoresSafeArea(.all)
+            } else if fakeArtistHasOpportunityToGuess && globalStateManager.username != globalStateManager.fakeArtist {
+                FakeArtistSayingTitleView()
+                    .background(VisualEffectView(effect: UIBlurEffect(style: .regular)))
+                    .transition(.scale.combined(with: .opacity))
+                    .ignoresSafeArea(.all)
+            } else if fakeArtistHasOpportunityToGuess && globalStateManager.username == globalStateManager.fakeArtist {
+                GuessTitleView()
+                    .background(VisualEffectView(effect: UIBlurEffect(style: .regular)))
+                    .transition(.scale.combined(with: .opacity))
+                    .ignoresSafeArea(.all)
             }
+        }
+    }
+
+    private func determineWinner() {
+        let votes = globalStateManager.votesForFakeArtist
+        let fakeArtistVotes = votes[globalStateManager.fakeArtist] ?? 0
+        let maxVotes = votes.values.max() ?? 0
+
+        if fakeArtistVotes != maxVotes || votes.values.filter({ $0 == maxVotes }).count > 1 {
+            fakeArtistAndQuestionMasterWins = true
+        } else {
+            playerWins = true
         }
     }
 
