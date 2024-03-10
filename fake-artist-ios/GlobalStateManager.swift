@@ -34,6 +34,9 @@ class GlobalStateManager: ObservableObject {
     @Published var numberOfOnePoints: [String: Int] = [:]
     @Published var showRoleDisplayViewAfterReset = false
     @Published var allPlayersResettedRoundState = false
+    @Published var titleGuessedByFakeArtist = ""
+    @Published var actualTitleForFakeArtist = ""
+    @Published var fakeArtistGuessedTitleCorrectly: Bool? = nil
     
     func resetGlobalState() {
         playerRole = ""
@@ -54,6 +57,9 @@ class GlobalStateManager: ObservableObject {
         fakeArtist = ""
         questionMaster = ""
         allPlayersResettedRoundState = false
+        titleGuessedByFakeArtist = ""
+        actualTitleForFakeArtist = ""
+        fakeArtistGuessedTitleCorrectly = nil
     }
 
     func addPlayer(player: String) {

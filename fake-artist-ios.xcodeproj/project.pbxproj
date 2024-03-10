@@ -15,6 +15,9 @@
 		0C7FAF922B8AC49800414335 /* VoteForPlayersOverlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C7FAF912B8AC49800414335 /* VoteForPlayersOverlayView.swift */; };
 		0C7FAF942B93E77100414335 /* PointsDistributionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C7FAF932B93E77100414335 /* PointsDistributionView.swift */; };
 		0C7FAF962B942CC300414335 /* LoadingNewRoundView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C7FAF952B942CC300414335 /* LoadingNewRoundView.swift */; };
+		0C7FAF982B9D050400414335 /* FakeArtistSayingTitleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C7FAF972B9D050400414335 /* FakeArtistSayingTitleView.swift */; };
+		0C7FAF9A2B9D0A6100414335 /* GuessTitleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C7FAF992B9D0A6100414335 /* GuessTitleView.swift */; };
+		0C7FAF9C2B9D0C2D00414335 /* SpeechBubbleTriangle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C7FAF9B2B9D0C2D00414335 /* SpeechBubbleTriangle.swift */; };
 		0C8B1F802B3FBFEA00D250CB /* GameCodeDisplay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C8B1F7F2B3FBFEA00D250CB /* GameCodeDisplay.swift */; };
 		0C8B1F832B3FE6E100D250CB /* GlobalStateManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C8B1F822B3FE6E100D250CB /* GlobalStateManager.swift */; };
 		0CC27AE92B3D260400F88012 /* OutlineButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CC27AE82B3D260400F88012 /* OutlineButtonStyle.swift */; };
@@ -63,6 +66,9 @@
 		0C7FAF912B8AC49800414335 /* VoteForPlayersOverlayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VoteForPlayersOverlayView.swift; sourceTree = "<group>"; };
 		0C7FAF932B93E77100414335 /* PointsDistributionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PointsDistributionView.swift; sourceTree = "<group>"; };
 		0C7FAF952B942CC300414335 /* LoadingNewRoundView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingNewRoundView.swift; sourceTree = "<group>"; };
+		0C7FAF972B9D050400414335 /* FakeArtistSayingTitleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FakeArtistSayingTitleView.swift; sourceTree = "<group>"; };
+		0C7FAF992B9D0A6100414335 /* GuessTitleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GuessTitleView.swift; sourceTree = "<group>"; };
+		0C7FAF9B2B9D0C2D00414335 /* SpeechBubbleTriangle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpeechBubbleTriangle.swift; sourceTree = "<group>"; };
 		0C8B1F7F2B3FBFEA00D250CB /* GameCodeDisplay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameCodeDisplay.swift; sourceTree = "<group>"; };
 		0C8B1F812B3FD6EE00D250CB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		0C8B1F822B3FE6E100D250CB /* GlobalStateManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlobalStateManager.swift; sourceTree = "<group>"; };
@@ -134,6 +140,9 @@
 				0C7FAF912B8AC49800414335 /* VoteForPlayersOverlayView.swift */,
 				0C7FAF932B93E77100414335 /* PointsDistributionView.swift */,
 				0C7FAF952B942CC300414335 /* LoadingNewRoundView.swift */,
+				0C7FAF972B9D050400414335 /* FakeArtistSayingTitleView.swift */,
+				0C7FAF992B9D0A6100414335 /* GuessTitleView.swift */,
+				0C7FAF9B2B9D0C2D00414335 /* SpeechBubbleTriangle.swift */,
 			);
 			path = common;
 			sourceTree = "<group>";
@@ -339,6 +348,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0C7FAF9C2B9D0C2D00414335 /* SpeechBubbleTriangle.swift in Sources */,
 				0C7A1E1A2B81940500EEF7A1 /* DrawCanvasView.swift in Sources */,
 				0C7FAF962B942CC300414335 /* LoadingNewRoundView.swift in Sources */,
 				0C8B1F832B3FE6E100D250CB /* GlobalStateManager.swift in Sources */,
@@ -348,7 +358,9 @@
 				0CCA6FF92B47B4A70013F21C /* CanvasCommunicationWebSocketManager.swift in Sources */,
 				0CCA6FF52B43A7D40013F21C /* JoinGamePlayers.swift in Sources */,
 				0CC27AEB2B3D2F6900F88012 /* NewGameSheet.swift in Sources */,
+				0C7FAF982B9D050400414335 /* FakeArtistSayingTitleView.swift in Sources */,
 				0CCA6FF32B420C850013F21C /* CommunicationWebSocketManager.swift in Sources */,
+				0C7FAF9A2B9D0A6100414335 /* GuessTitleView.swift in Sources */,
 				0CC27AE92B3D260400F88012 /* OutlineButtonStyle.swift in Sources */,
 				0C8B1F802B3FBFEA00D250CB /* GameCodeDisplay.swift in Sources */,
 				0CE5C4EE2B3804C6009B4F08 /* Home.swift in Sources */,

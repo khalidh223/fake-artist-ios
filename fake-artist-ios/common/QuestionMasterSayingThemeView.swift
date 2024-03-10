@@ -25,7 +25,7 @@ struct QuestionMasterSayingThemeView: View {
                     .shadow(radius: 5)
                     .scaleEffect(1)
                     .overlay(
-                        Triangle()
+                        SpeechBubbleTriangle()
                             .fill(.white)
                             .frame(width: 20, height: 20)
                             .rotationEffect(.degrees(80))
@@ -52,17 +52,6 @@ struct QuestionMasterSayingThemeView: View {
                 }
             }
         }
-    }
-}
-
-struct Triangle: Shape {
-    func path(in rect: CGRect) -> Path {
-        var path = Path()
-        path.move(to: CGPoint(x: rect.midX, y: rect.minY))
-        path.addLine(to: CGPoint(x: rect.minX, y: rect.maxY))
-        path.addLine(to: CGPoint(x: rect.maxX, y: rect.maxY))
-        path.addLine(to: CGPoint(x: rect.midX, y: rect.minY))
-        return path
     }
 }
 

@@ -148,6 +148,13 @@ class CommunicationWebSocketManager: NSObject, ObservableObject, URLSessionWebSo
                     GlobalStateManager.shared.questionMaster = questionMaster
                 }
             }
+        case "setFakeArtistGuessAndActualTitle":
+            if let titleGuessedByFakeArtist = dictionary["titleGuessedByFakeArtist"] as? String, let actualTitleForFakeArtist = dictionary["actualTitle"] as? String {
+                DispatchQueue.main.async {  
+                    GlobalStateManager.shared.titleGuessedByFakeArtist = titleGuessedByFakeArtist
+                    GlobalStateManager.shared.actualTitleForFakeArtist = actualTitleForFakeArtist
+                }
+            }
         default:
             print("WebSocketManager: Received action: \(action)")
         }

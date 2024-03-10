@@ -94,6 +94,15 @@ class CanvasCommunicationWebSocketManager: NSObject, ObservableObject, URLSessio
         ]
         sendCommunicationMessage(data)
     }
+    
+    func sendFakeArtistGuess(gameCode: String, title: String) {
+        let data: [String: Any] = [
+            "action": "sendFakeArtistGuess",
+            "gameCode": gameCode,
+            "title": title,
+        ]
+        sendCommunicationMessage(data)
+    }
 
     func disconnect() {
         canvasCommunicationWebSocket?.cancel()

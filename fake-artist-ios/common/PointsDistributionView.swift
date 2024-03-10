@@ -139,6 +139,9 @@ struct PointsDistributionView: View {
 
         if fakeArtistVotes != maxVotes || votes.values.filter({ $0 == maxVotes }).count > 1 {
             fakeArtistAndQuestionMasterWins = true
+        } 
+        else if globalStateManager.fakeArtistGuessedTitleCorrectly == true {
+            fakeArtistAndQuestionMasterWins = true
         } else {
             playerWins = true
         }
