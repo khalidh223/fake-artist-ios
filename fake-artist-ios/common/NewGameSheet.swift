@@ -75,7 +75,7 @@ struct NewGameSheet: View {
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
         request.httpBody = jsonData
 
-        isLoading = true // Start loading
+        isLoading = true
 
         URLSession.shared.dataTask(with: request) { data, _, error in
             defer { DispatchQueue.main.async { self.isLoading = false } }

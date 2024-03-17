@@ -170,7 +170,6 @@ struct RoleDisplayView: View {
             }
             .onChange(of: globalStateManager.showDrawCanvasView) { show in
                 if show {
-                    // Hide the blur effect
                     globalStateManager.showBlurEffect = false
                 }
             }
@@ -264,7 +263,7 @@ struct RoleDisplayView: View {
         case "QUESTION_MASTER":
             return "questionMaster"
         default:
-            return "defaultImage" // Replace with a default image name if needed
+            return "defaultImage"
         }
     }
 
@@ -297,13 +296,12 @@ struct RoleDisplayView: View {
 
 struct RoleDisplayView_Previews: PreviewProvider {
     static var previews: some View {
-        // Mock GlobalStateManager for preview
         let mockGlobalStateManager = GlobalStateManager()
-        mockGlobalStateManager.setPlayerRole("QUESTION_MASTER") // Example role
-        mockGlobalStateManager.allPlayersConfirmedColor = true // Set to true to preview the confirmation view
+        mockGlobalStateManager.setPlayerRole("QUESTION_MASTER")
+        mockGlobalStateManager.allPlayersConfirmedColor = true
 
         return RoleDisplayView(globalStateManager: mockGlobalStateManager)
-            .previewLayout(.sizeThatFits) // Adjust layout as needed
+            .previewLayout(.sizeThatFits)
             .padding()
             .background(Color.gray.opacity(0.1))
     }

@@ -22,7 +22,7 @@ struct GameCodeDisplay: View {
                     .edgesIgnoringSafeArea(.all)
 
                 VStack {
-                    Spacer() // Pushes content to the center
+                    Spacer()
 
                     Text("Your game code is:")
                         .font(.title)
@@ -45,7 +45,7 @@ struct GameCodeDisplay: View {
                             }
                         }
                     }
-                    .frame(maxHeight: 200) // Adjust as needed
+                    .frame(maxHeight: 200)
 
                     Spacer()
 
@@ -75,10 +75,9 @@ struct GameCodeDisplay: View {
                     .foregroundColor(.yellow)
                 }
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
-                .padding() // Add padding around the entire VStack
+                .padding()
 
                 if globalStateManager.showBlurEffect {
-                    // Blurry glass-like background
                     Color.clear
                         .background(VisualEffectView(effect: UIBlurEffect(style: .regular)))
                         .edgesIgnoringSafeArea(.all)
@@ -86,7 +85,6 @@ struct GameCodeDisplay: View {
                 }
 
                 if isRolePresented {
-                    // Role display view
                     RoleDisplayView()
                         .transition(.scale.combined(with: .opacity))
                 }
