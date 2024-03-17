@@ -140,7 +140,7 @@ class CommunicationWebSocketManager: NSObject, ObservableObject, URLSessionWebSo
                 }
             }
         case "allPlayersResettedRoundState":
-            GlobalStateManager.shared.resetGlobalState()
+            GlobalStateManager.shared.resetGlobalRoundState()
             GlobalStateManager.shared.allPlayersResettedRoundState = true
         case "getUsernameOfQuestionMaster":
             if let questionMaster = dictionary["username"] as? String {

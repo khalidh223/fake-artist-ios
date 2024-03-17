@@ -18,6 +18,8 @@
 		0C7FAF982B9D050400414335 /* FakeArtistSayingTitleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C7FAF972B9D050400414335 /* FakeArtistSayingTitleView.swift */; };
 		0C7FAF9A2B9D0A6100414335 /* GuessTitleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C7FAF992B9D0A6100414335 /* GuessTitleView.swift */; };
 		0C7FAF9C2B9D0C2D00414335 /* SpeechBubbleTriangle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C7FAF9B2B9D0C2D00414335 /* SpeechBubbleTriangle.swift */; };
+		0C7FAF9E2B9D851500414335 /* GameWinnerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C7FAF9D2B9D851500414335 /* GameWinnerView.swift */; };
+		0C7FAFA02BA6113A00414335 /* SubscriptionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C7FAF9F2BA6113A00414335 /* SubscriptionManager.swift */; };
 		0C8B1F802B3FBFEA00D250CB /* GameCodeDisplay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C8B1F7F2B3FBFEA00D250CB /* GameCodeDisplay.swift */; };
 		0C8B1F832B3FE6E100D250CB /* GlobalStateManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C8B1F822B3FE6E100D250CB /* GlobalStateManager.swift */; };
 		0CC27AE92B3D260400F88012 /* OutlineButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CC27AE82B3D260400F88012 /* OutlineButtonStyle.swift */; };
@@ -69,6 +71,8 @@
 		0C7FAF972B9D050400414335 /* FakeArtistSayingTitleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FakeArtistSayingTitleView.swift; sourceTree = "<group>"; };
 		0C7FAF992B9D0A6100414335 /* GuessTitleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GuessTitleView.swift; sourceTree = "<group>"; };
 		0C7FAF9B2B9D0C2D00414335 /* SpeechBubbleTriangle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpeechBubbleTriangle.swift; sourceTree = "<group>"; };
+		0C7FAF9D2B9D851500414335 /* GameWinnerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameWinnerView.swift; sourceTree = "<group>"; };
+		0C7FAF9F2BA6113A00414335 /* SubscriptionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscriptionManager.swift; sourceTree = "<group>"; };
 		0C8B1F7F2B3FBFEA00D250CB /* GameCodeDisplay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameCodeDisplay.swift; sourceTree = "<group>"; };
 		0C8B1F812B3FD6EE00D250CB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		0C8B1F822B3FE6E100D250CB /* GlobalStateManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlobalStateManager.swift; sourceTree = "<group>"; };
@@ -143,6 +147,7 @@
 				0C7FAF972B9D050400414335 /* FakeArtistSayingTitleView.swift */,
 				0C7FAF992B9D0A6100414335 /* GuessTitleView.swift */,
 				0C7FAF9B2B9D0C2D00414335 /* SpeechBubbleTriangle.swift */,
+				0C7FAF9D2B9D851500414335 /* GameWinnerView.swift */,
 			);
 			path = common;
 			sourceTree = "<group>";
@@ -178,6 +183,7 @@
 				0C3618DB2B3F8DE80063C700 /* DrawingWebSocketManager.swift */,
 				0CCA6FF82B47B4A70013F21C /* CanvasCommunicationWebSocketManager.swift */,
 				0C8B1F822B3FE6E100D250CB /* GlobalStateManager.swift */,
+				0C7FAF9F2BA6113A00414335 /* SubscriptionManager.swift */,
 				0CE5C4EF2B3804C7009B4F08 /* Assets.xcassets */,
 				0CE5C4F12B3804C7009B4F08 /* Preview Content */,
 				0CCA6FF22B420C850013F21C /* CommunicationWebSocketManager.swift */,
@@ -357,10 +363,12 @@
 				0C7A1E142B68AE3600EEF7A1 /* DrawingData.swift in Sources */,
 				0CCA6FF92B47B4A70013F21C /* CanvasCommunicationWebSocketManager.swift in Sources */,
 				0CCA6FF52B43A7D40013F21C /* JoinGamePlayers.swift in Sources */,
+				0C7FAF9E2B9D851500414335 /* GameWinnerView.swift in Sources */,
 				0CC27AEB2B3D2F6900F88012 /* NewGameSheet.swift in Sources */,
 				0C7FAF982B9D050400414335 /* FakeArtistSayingTitleView.swift in Sources */,
 				0CCA6FF32B420C850013F21C /* CommunicationWebSocketManager.swift in Sources */,
 				0C7FAF9A2B9D0A6100414335 /* GuessTitleView.swift in Sources */,
+				0C7FAFA02BA6113A00414335 /* SubscriptionManager.swift in Sources */,
 				0CC27AE92B3D260400F88012 /* OutlineButtonStyle.swift in Sources */,
 				0C8B1F802B3FBFEA00D250CB /* GameCodeDisplay.swift in Sources */,
 				0CE5C4EE2B3804C6009B4F08 /* Home.swift in Sources */,

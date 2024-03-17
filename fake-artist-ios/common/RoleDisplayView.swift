@@ -29,11 +29,12 @@ struct RoleDisplayView: View {
     @State private var showWaitingText = false
     @State private var showConfirmationView = false
     @State private var showCardView = false
+    @State private var showRoleDisplayView = true
     @State private var theme = ""
     @State private var title = ""
 
     var body: some View {
-        if !globalStateManager.showDrawCanvasView || globalStateManager.showRoleDisplayViewAfterReset {
+        if showRoleDisplayView && (!globalStateManager.showDrawCanvasView || globalStateManager.showRoleDisplayViewAfterReset) {
             ZStack {
                 if !showWaitingText {
                     VStack {
@@ -187,6 +188,13 @@ struct RoleDisplayView: View {
                     showWaitingText = false
                     showConfirmationView = false
                 }
+            }.onReceive(self.globalStateManager.$playerRevisitingHomeAfterGame) {
+                playerRevisitingHomeAfterGame in if playerRevisitingHomeAfterGame == true {
+                    showCardView = false
+                    showWaitingText = false
+                    showConfirmationView = false
+                    showRoleDisplayView = false
+                }
             }
         } else {
             DrawCanvasView().transition(.opacity)
@@ -247,7 +255,6 @@ struct RoleDisplayView: View {
         }
     }
 
-    // Function to determine the image name based on the role
     private func roleImageName() -> String {
         switch globalStateManager.playerRole {
         case "PLAYER":

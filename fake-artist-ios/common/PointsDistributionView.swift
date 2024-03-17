@@ -1,3 +1,4 @@
+import Combine
 import SwiftUI
 
 struct PointsDistributionView: View {
@@ -6,9 +7,14 @@ struct PointsDistributionView: View {
     @State var fakeArtistAndQuestionMasterWins = false
     @State var playerWins = false
     @State var showLoadingNewRoundView = false
+    @State var gameOver = false
+    @State var playerWithFiveOrMorePoints = ""
+    @State var showGameWinnerView = false
+    @State private var cancellables = Set<AnyCancellable>()
+    @StateObject private var subscriptionManager = SubscriptionManager()
 
     var body: some View {
-        if !showLoadingNewRoundView {
+        if !showLoadingNewRoundView && !showGameWinnerView {
             VStack {
                 Spacer()
                 VStack {
@@ -28,8 +34,12 @@ struct PointsDistributionView: View {
                     }
 
                     HomeButton(text: "OKAY", action: {
-                        canvasCommunicationWebSocketManager.sendResetRoundStateForPlayer(gameCode: globalStateManager.gameCode, username: globalStateManager.username, currentQuestionMaster: globalStateManager.questionMaster)
-                        showLoadingNewRoundView = true
+                        if gameOver {
+                            showGameWinnerView = true
+                        } else {
+                            canvasCommunicationWebSocketManager.sendResetRoundStateForPlayer(gameCode: globalStateManager.gameCode, username: globalStateManager.username, currentQuestionMaster: globalStateManager.questionMaster)
+                            showLoadingNewRoundView = true
+                        }
 
                     })
                     .padding(.top, 20)
@@ -42,6 +52,8 @@ struct PointsDistributionView: View {
             }
             .padding(.horizontal)
             .onAppear {
+                subscriptionManager.setupSubscriptions(globalStateManager: globalStateManager)
+                
                 determineWinner()
                 if fakeArtistAndQuestionMasterWins {
                     globalStateManager.incrementNumberOfTwoPoints(username: globalStateManager.fakeArtist)
@@ -53,14 +65,28 @@ struct PointsDistributionView: View {
                         globalStateManager.incrementNumberOfOnePoints(username: player)
                     }
                 }
+                
+                subscriptionManager.playerWithFiveOrMorePointsPublisher
+                    .sink { player in
+                        self.playerWithFiveOrMorePoints = player
+                        if !player.isEmpty {
+                            self.gameOver = true
+                        }
+                    }
+                    .store(in: &cancellables)
             }
             .onReceive(self.globalStateManager.$allPlayersResettedRoundState) {
                 allPlayersResettedRoundState in if allPlayersResettedRoundState == true {
                     showLoadingNewRoundView = false
                 }
             }
-        } else {
+        } else if showLoadingNewRoundView {
             LoadingNewRoundView()
+                .background(VisualEffectView(effect: UIBlurEffect(style: .regular)))
+                .transition(.scale.combined(with: .opacity))
+                .ignoresSafeArea(.all)
+        } else if showGameWinnerView {
+            GameWinnerView(gameWinner: playerWithFiveOrMorePoints)
                 .background(VisualEffectView(effect: UIBlurEffect(style: .regular)))
                 .transition(.scale.combined(with: .opacity))
                 .ignoresSafeArea(.all)
@@ -139,8 +165,7 @@ struct PointsDistributionView: View {
 
         if fakeArtistVotes != maxVotes || votes.values.filter({ $0 == maxVotes }).count > 1 {
             fakeArtistAndQuestionMasterWins = true
-        } 
-        else if globalStateManager.fakeArtistGuessedTitleCorrectly == true {
+        } else if globalStateManager.fakeArtistGuessedTitleCorrectly == true {
             fakeArtistAndQuestionMasterWins = true
         } else {
             playerWins = true
