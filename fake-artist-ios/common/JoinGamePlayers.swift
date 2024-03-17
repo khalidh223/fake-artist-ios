@@ -6,6 +6,7 @@ struct JoinGamePlayers: View {
     @ObservedObject private var drawingWebSocketManager = DrawingWebSocketManager.shared
     @State private var showGameEndedAlert = false
     @State private var isRolePresented = false
+    @State private var showJoinGamePlayers = true
 
     var onCancel: () -> Void
 
@@ -13,11 +14,11 @@ struct JoinGamePlayers: View {
         ZStack {
             if globalStateManager.showDrawCanvasView {
                 DrawCanvasView().transition(.opacity)
-            } else {
+            } else if !globalStateManager.playerRevisitingHomeAfterGame && showJoinGamePlayers {
                 Color(red: 115.0 / 255.0, green: 5.0 / 255.0, blue: 60.0 / 255.0)
                     .edgesIgnoringSafeArea(.all)
                 VStack {
-                    Spacer() // Pushes content to the center
+                    Spacer()
 
                     Text("Waiting for host to start game...")
                         .font(.title)
@@ -103,6 +104,13 @@ struct JoinGamePlayers: View {
             allPlayersResettedRoundState in if allPlayersResettedRoundState == true {
                 isRolePresented = false
                 globalStateManager.showBlurEffect = true
+            }
+        }
+        .onReceive(self.globalStateManager.$playerRevisitingHomeAfterGame) {
+            playerRevisitingHomeAfterGame in if playerRevisitingHomeAfterGame == true {
+                isRolePresented = false
+                globalStateManager.showBlurEffect = false
+                showJoinGamePlayers = false
             }
         }
     }

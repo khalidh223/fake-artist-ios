@@ -38,8 +38,10 @@ struct NewGameSheet: View {
 
                 Spacer()
             }
+            
             .navigationBarItems(trailing: Button("Next") {
                 globalStateManager.setUsername(usernameToSet: username)
+                globalStateManager.playerRevisitingHomeAfterGame = false
                 fetchGameCode(globalStateManager: globalStateManager)
             }
             .disabled(username.isEmpty || isLoading))

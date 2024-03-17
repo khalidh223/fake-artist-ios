@@ -170,6 +170,7 @@ struct JoinGameSheet: View {
         if isCheckingValidity {
             globalStateManager.setUsername(usernameToSet: username)
             globalStateManager.setGameCode(gameCodeToSet: gameCode)
+            globalStateManager.playerRevisitingHomeAfterGame = false
             isCheckingValidity = false
             onJoinGame()
         }

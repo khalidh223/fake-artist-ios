@@ -24,182 +24,184 @@ struct DrawCanvasView: View {
     let maxRounds = 2
 
     var body: some View {
-        ZStack {
-            // Background content
-            Color(.white)
-            VStack {
-                Canvas { context, _ in
-                    for drawingPath in self.paths {
-                        var path = Path()
-                        path.move(to: CGPoint(x: drawingPath.startX, y: drawingPath.startY))
-                        path.addLine(to: CGPoint(x: drawingPath.endX, y: drawingPath.endY))
-                        context.stroke(path, with: .color(drawingPath.color), lineWidth: 4)
-                    }
-                }.ignoresSafeArea(.all)
-                    .gesture(DragGesture(minimumDistance: 0, coordinateSpace: .local)
-                        .onChanged { value in
-                            if self.globalStateManager.currentPlayerDrawing == self.globalStateManager.username, !self.globalStateManager.stoppedGame {
-                                self.handleDrawing(value: value)
+        if self.globalStateManager.showDrawCanvasView {
+            ZStack {
+                // Background content
+                Color(.white)
+                VStack {
+                    Canvas { context, _ in
+                        for drawingPath in self.paths {
+                            var path = Path()
+                            path.move(to: CGPoint(x: drawingPath.startX, y: drawingPath.startY))
+                            path.addLine(to: CGPoint(x: drawingPath.endX, y: drawingPath.endY))
+                            context.stroke(path, with: .color(drawingPath.color), lineWidth: 4)
+                        }
+                    }.ignoresSafeArea(.all)
+                        .gesture(DragGesture(minimumDistance: 0, coordinateSpace: .local)
+                            .onChanged { value in
+                                if self.globalStateManager.currentPlayerDrawing == self.globalStateManager.username, !self.globalStateManager.stoppedGame {
+                                    self.handleDrawing(value: value)
+                                }
                             }
+                            .onEnded { _ in
+                                self.handleGestureEnded()
+                            }
+                        )
+                        .onReceive(self.drawingWebSocketManager.$receivedDrawingData) { data in
+                            guard let data = data else { return }
+                            self.addPath(from: data)
                         }
-                        .onEnded { _ in
-                            self.handleGestureEnded()
-                        }
-                    )
-                    .onReceive(self.drawingWebSocketManager.$receivedDrawingData) { data in
-                        guard let data = data else { return }
-                        self.addPath(from: data)
-                    }
-            }.ignoresSafeArea(.all)
+                }.ignoresSafeArea(.all)
 
-            if self.isViewVotingButtonVisible {
-                VStack {
-                    HomeButton(text: "View Voting") {
-                        self.globalStateManager.showVoteFakeArtistView = true
-                    }
-                    .padding()
-                    .cornerRadius(8)
-                    .padding(.top, 60)
-                    Spacer()
-                }
-            }
-
-            // Draggable Sheet
-            GeometryReader { geometry in
-                VStack {
-                    Spacer()
-                    VStack(alignment: .center) {
-                        // Handle area
-                        RoundedRectangle(cornerRadius: 5)
-                            .frame(width: 40, height: 5)
-                            .padding()
-                        HStack {
-                            RoundedBoxView(text: self.globalStateManager.themeChosenByQuestionMaster, title: "theme", backgroundColor: Color(hex: "#FDAECD")!)
-                            Spacer()
-                            RoundedBoxView(text: self.globalStateManager.titleChosenByQuestionMaster == "" ? "???" : self.globalStateManager.titleChosenByQuestionMaster, title: "title", backgroundColor: Color(hex: "#FDAECD")!)
+                if self.isViewVotingButtonVisible {
+                    VStack {
+                        HomeButton(text: "View Voting") {
+                            self.globalStateManager.showVoteFakeArtistView = true
                         }
-                        .padding(.horizontal, 16)
-                        .padding(.top, 14)
+                        .padding()
+                        .cornerRadius(8)
+                        .padding(.top, 60)
                         Spacer()
-                        ScrollView {
+                    }
+                }
+
+                // Draggable Sheet
+                GeometryReader { geometry in
+                    VStack {
+                        Spacer()
+                        VStack(alignment: .center) {
+                            // Handle area
+                            RoundedRectangle(cornerRadius: 5)
+                                .frame(width: 40, height: 5)
+                                .padding()
+                            HStack {
+                                RoundedBoxView(text: self.globalStateManager.themeChosenByQuestionMaster, title: "theme", backgroundColor: Color(hex: "#FDAECD")!)
+                                Spacer()
+                                RoundedBoxView(text: self.globalStateManager.titleChosenByQuestionMaster == "" ? "???" : self.globalStateManager.titleChosenByQuestionMaster, title: "title", backgroundColor: Color(hex: "#FDAECD")!)
+                            }
+                            .padding(.horizontal, 16)
+                            .padding(.top, 14)
                             Spacer()
-                            Spacer()
-                            VStack(alignment: .leading) {
-                                ForEach(self.globalStateManager.players.sorted { $0.lowercased() < $1.lowercased() }, id: \.self) { player in
-                                    HStack {
-                                        if player == self.globalStateManager.currentPlayerDrawing && player != self.globalStateManager.questionMaster {
-                                            Image(systemName: "arrow.right")
+                            ScrollView {
+                                Spacer()
+                                Spacer()
+                                VStack(alignment: .leading) {
+                                    ForEach(self.globalStateManager.players.sorted { $0.lowercased() < $1.lowercased() }, id: \.self) { player in
+                                        HStack {
+                                            if player == self.globalStateManager.currentPlayerDrawing && player != self.globalStateManager.questionMaster {
+                                                Image(systemName: "arrow.right")
+                                                    .foregroundColor(.black)
+                                                    .scaleEffect(1.3)
+                                            } else {
+                                                Image(systemName: "arrow.right")
+                                                    .foregroundColor(.clear) // Make the placeholder arrow transparent
+                                                    .scaleEffect(1.3) // Ensure the placeholder matches the size of the actual arrow
+                                            }
+                                            Image(player != self.globalStateManager.questionMaster ? "player" : "questionMaster")
+                                                .resizable()
+                                                .scaledToFill()
+                                                .scaleEffect(0.6)
+                                                .offset(y: 5)
+                                                .frame(width: 45, height: 45)
+                                                .clipShape(Circle())
+                                                .overlay(Circle().stroke(Color.black, lineWidth: 1))
                                                 .foregroundColor(.black)
-                                                .scaleEffect(1.3)
-                                        } else {
-                                            Image(systemName: "arrow.right")
-                                                .foregroundColor(.clear) // Make the placeholder arrow transparent
-                                                .scaleEffect(1.3) // Ensure the placeholder matches the size of the actual arrow
-                                        }
-                                        Image(player != self.globalStateManager.questionMaster ? "player" : "questionMaster")
-                                            .resizable()
-                                            .scaledToFill()
-                                            .scaleEffect(0.6)
-                                            .offset(y: 5)
-                                            .frame(width: 45, height: 45)
-                                            .clipShape(Circle())
-                                            .overlay(Circle().stroke(Color.black, lineWidth: 1))
-                                            .foregroundColor(.black)
 
-                                        VStack(alignment: .leading, spacing: 1) {
-                                            Text(player).fontWeight(.bold)
-                                            let playerConfirmedColor = self.globalStateManager.playerToConfirmedColor[player] ?? ""
-                                            let colorHex = self.hexColorFor(penColor: playerConfirmedColor)
+                                            VStack(alignment: .leading, spacing: 1) {
+                                                Text(player).fontWeight(.bold)
+                                                let playerConfirmedColor = self.globalStateManager.playerToConfirmedColor[player] ?? ""
+                                                let colorHex = self.hexColorFor(penColor: playerConfirmedColor)
 
-                                            Rectangle()
-                                                .fill(Color(hex: colorHex) ?? Color.black)
-                                                .frame(width: 50, height: 10)
-                                        }
-                                        HStack(alignment: .center, spacing: 1) {
-                                            Image("one_coin")
-                                                .scaleEffect(0.8)
-                                            Text("x\(globalStateManager.numberOfOnePoints[player] ?? 0)")
-                                            Image("two_coin")
-                                                .scaleEffect(0.8)
-                                            Text("x\(globalStateManager.numberOfTwoPoints[player] ?? 0)")
+                                                Rectangle()
+                                                    .fill(Color(hex: colorHex) ?? Color.black)
+                                                    .frame(width: 50, height: 10)
+                                            }
+                                            HStack(alignment: .center, spacing: 1) {
+                                                Image("one_coin")
+                                                    .scaleEffect(0.8)
+                                                Text("x\(self.globalStateManager.numberOfOnePoints[player] ?? 0)")
+                                                Image("two_coin")
+                                                    .scaleEffect(0.8)
+                                                Text("x\(self.globalStateManager.numberOfTwoPoints[player] ?? 0)")
+                                            }
                                         }
                                     }
                                 }
                             }
+                            Spacer()
                         }
-                        Spacer()
-                    }
-                    .frame(width: geometry.size.width, height: geometry.size.height / 2)
-                    .background(Color.white)
-                    .cornerRadius(15)
-                    .shadow(radius: 5)
-                    .offset(y: self.isSheetOpen ? 0 : geometry.size.height / 2 - self.partialSheetHeight)
-                    .offset(y: self.offset.height)
-                    .gesture(
-                        DragGesture()
-                            .onChanged { gesture in
-                                self.offset = gesture.translation
-                            }
-                            .onEnded { gesture in
-                                let verticalMovement = gesture.translation.height
-                                if verticalMovement > self.threshold {
-                                    self.isSheetOpen = false
-                                } else if verticalMovement < -self.threshold {
-                                    self.isSheetOpen = true
+                        .frame(width: geometry.size.width, height: geometry.size.height / 2)
+                        .background(Color.white)
+                        .cornerRadius(15)
+                        .shadow(radius: 5)
+                        .offset(y: self.isSheetOpen ? 0 : geometry.size.height / 2 - self.partialSheetHeight)
+                        .offset(y: self.offset.height)
+                        .gesture(
+                            DragGesture()
+                                .onChanged { gesture in
+                                    self.offset = gesture.translation
                                 }
-                                self.offset = .zero
+                                .onEnded { gesture in
+                                    let verticalMovement = gesture.translation.height
+                                    if verticalMovement > self.threshold {
+                                        self.isSheetOpen = false
+                                    } else if verticalMovement < -self.threshold {
+                                        self.isSheetOpen = true
+                                    }
+                                    self.offset = .zero
+                                }
+                        )
+                        .animation(.linear(duration: 0.2), value: self.isSheetOpen)
+                    }
+                }.ignoresSafeArea(.all)
+
+                // Opaque overlay
+                if self.isCurrentPlayerDrawingOverlayVisible {
+                    ZStack {
+                        Color.white.opacity(0.5)
+                            .edgesIgnoringSafeArea(.all)
+                            .onTapGesture {
+                                self.isCurrentPlayerDrawingOverlayVisible = false
                             }
-                    )
-                    .animation(.linear(duration: 0.2), value: self.isSheetOpen)
+
+                        Text(self.overlayText)
+                            .font(.title)
+                            .foregroundColor(.black)
+                            .transition(.opacity)
+                            .animation(.easeInOut, value: self.isCurrentPlayerDrawingOverlayVisible)
+                    }.ignoresSafeArea(.all)
+                } else if self.globalStateManager.showVoteFakeArtistView {
+                    VoteForPlayersOverlayView()
+                        .background(VisualEffectView(effect: UIBlurEffect(style: .regular)))
+                        .transition(.scale.combined(with: .opacity))
+                        .ignoresSafeArea(.all)
                 }
             }.ignoresSafeArea(.all)
+                .onReceive(self.globalStateManager.$currentPlayerDrawing) { currentPlayerDrawing in
+                    if currentPlayerDrawing == self.globalStateManager.username {
+                        self.overlayText = "Your turn to draw!"
+                    } else {
+                        self.overlayText = "\(currentPlayerDrawing) is drawing"
+                    }
+                    self.isCurrentPlayerDrawingOverlayVisible = true
 
-            // Opaque overlay
-            if self.isCurrentPlayerDrawingOverlayVisible {
-                ZStack {
-                    Color.white.opacity(0.5)
-                        .edgesIgnoringSafeArea(.all)
-                        .onTapGesture {
-                            self.isCurrentPlayerDrawingOverlayVisible = false
-                        }
-
-                    Text(self.overlayText)
-                        .font(.title)
-                        .foregroundColor(.black)
-                        .transition(.opacity)
-                        .animation(.easeInOut, value: self.isCurrentPlayerDrawingOverlayVisible)
-                }.ignoresSafeArea(.all)
-            } else if self.globalStateManager.showVoteFakeArtistView {
-                VoteForPlayersOverlayView()
-                    .background(VisualEffectView(effect: UIBlurEffect(style: .regular)))
-                    .transition(.scale.combined(with: .opacity))
-                    .ignoresSafeArea(.all)
-            }
-        }.ignoresSafeArea(.all)
-            .onReceive(self.globalStateManager.$currentPlayerDrawing) { currentPlayerDrawing in
-                if currentPlayerDrawing == self.globalStateManager.username {
-                    self.overlayText = "Your turn to draw!"
-                } else {
-                    self.overlayText = "\(currentPlayerDrawing) is drawing"
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+                        self.isCurrentPlayerDrawingOverlayVisible = false
+                    }
                 }
-                self.isCurrentPlayerDrawingOverlayVisible = true
-
-                DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
-                    self.isCurrentPlayerDrawingOverlayVisible = false
+                .onReceive(self.globalStateManager.$stoppedGame) {
+                    stoppedGame in if stoppedGame == true { self.isViewVotingButtonVisible = true
+                        self.globalStateManager.showVoteFakeArtistView = true
+                    }
                 }
-            }
-            .onReceive(self.globalStateManager.$stoppedGame) {
-                stoppedGame in if stoppedGame == true { self.isViewVotingButtonVisible = true
-                    self.globalStateManager.showVoteFakeArtistView = true
+                .onReceive(self.globalStateManager.$allPlayersResettedRoundState) {
+                    allPlayersResettedRoundState in if allPlayersResettedRoundState == true {
+                        self.numberOfDrawings = 0
+                        self.numberOfRounds = 0
+                        self.paths.removeAll()
+                    }
                 }
-            }
-            .onReceive(self.globalStateManager.$allPlayersResettedRoundState) {
-                allPlayersResettedRoundState in if allPlayersResettedRoundState == true {
-                    numberOfDrawings = 0
-                    numberOfRounds = 0
-                    paths.removeAll()
-                }
-            }
+        }
     }
 
     private func handleGestureEnded() {

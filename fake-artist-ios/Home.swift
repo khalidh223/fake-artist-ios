@@ -51,8 +51,8 @@ struct Home: View {
                 HomeButton(text: "JOIN GAME", action: { showJoinGameSheet = true })
                     .sheet(isPresented: $showJoinGameSheet) {
                         JoinGameSheet(isPresented: $showJoinGameSheet, onJoinGame: {
-                            showJoinGameSheet = false // Dismiss the JoinGameSheet
-                            navigateToJoinGamePlayers = true // Trigger navigation to JoinGamePlayers
+                            showJoinGameSheet = false
+                            navigateToJoinGamePlayers = true
                         })
                     }
             }
@@ -77,6 +77,13 @@ struct Home: View {
                     globalStateManager.setUsername(usernameToSet: "")
                     globalStateManager.setGameCode(gameCodeToSet: "")
                 }
+            }
+        }
+        .onReceive(self.globalStateManager.$playerRevisitingHomeAfterGame) {
+            playerRevisitingHomeAfterGame in if playerRevisitingHomeAfterGame == true {
+                self.showNewGameSheet = false
+                self.showJoinGameSheet = false
+                self.navigateToJoinGamePlayers = false
             }
         }
     }

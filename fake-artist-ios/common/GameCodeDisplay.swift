@@ -17,7 +17,7 @@ struct GameCodeDisplay: View {
 
     var body: some View {
         ZStack {
-            if !globalStateManager.showDrawCanvasView {
+            if !globalStateManager.showDrawCanvasView && !globalStateManager.playerRevisitingHomeAfterGame {
                 Color(red: 115.0 / 255.0, green: 5.0 / 255.0, blue: 60.0 / 255.0)
                     .edgesIgnoringSafeArea(.all)
 
@@ -90,7 +90,7 @@ struct GameCodeDisplay: View {
                     RoleDisplayView()
                         .transition(.scale.combined(with: .opacity))
                 }
-            } else {
+            } else if globalStateManager.showDrawCanvasView {
                 DrawCanvasView().transition(.opacity)
             }
         }
@@ -114,6 +114,13 @@ struct GameCodeDisplay: View {
             allPlayersResettedRoundState in if allPlayersResettedRoundState == true {
                 isRolePresented = false
                 globalStateManager.showBlurEffect = true
+            }
+        }
+        .onReceive(self.globalStateManager.$playerRevisitingHomeAfterGame) {
+            playerRevisitingHomeAfterGame in if playerRevisitingHomeAfterGame == true {
+                isRolePresented = false
+                globalStateManager.showBlurEffect = false
+                isStartingGame = false
             }
         }
     }

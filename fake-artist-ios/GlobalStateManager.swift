@@ -37,8 +37,10 @@ class GlobalStateManager: ObservableObject {
     @Published var titleGuessedByFakeArtist = ""
     @Published var actualTitleForFakeArtist = ""
     @Published var fakeArtistGuessedTitleCorrectly: Bool? = nil
+    @Published var playerRevisitingHomeAfterGame = false
+    var pointUpdates = PassthroughSubject<Void, Never>()
     
-    func resetGlobalState() {
+    func resetGlobalRoundState() {
         playerRole = ""
         colorToUsernameMap.removeAll()
         userSelectedColorHex = ""
@@ -60,6 +62,16 @@ class GlobalStateManager: ObservableObject {
         titleGuessedByFakeArtist = ""
         actualTitleForFakeArtist = ""
         fakeArtistGuessedTitleCorrectly = nil
+    }
+    
+    func resetGlobalGameState() {
+        resetGlobalRoundState()
+        gameCode = ""
+        username = ""
+        players.removeAll()
+        communicationConnectionId = ""
+        showRoleDisplayViewAfterReset = false
+        playerRevisitingHomeAfterGame = true
     }
 
     func addPlayer(player: String) {
@@ -179,6 +191,7 @@ class GlobalStateManager: ObservableObject {
             } else {
                 self.numberOfTwoPoints[username] = 1
             }
+            self.pointUpdates.send()
         }
     }
     
@@ -189,6 +202,7 @@ class GlobalStateManager: ObservableObject {
             } else {
                 self.numberOfOnePoints[username] = 1
             }
+            self.pointUpdates.send()
         }
     }
 }
