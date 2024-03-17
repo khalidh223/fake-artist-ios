@@ -4,8 +4,6 @@
 //
 //  Created by Khalid Hussain on 12/24/23.
 //
-
-@testable import fake_artist_ios
 import XCTest
 
 final class fake_artist_iosTests: XCTestCase {

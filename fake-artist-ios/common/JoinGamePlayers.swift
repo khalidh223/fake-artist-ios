@@ -49,7 +49,6 @@ struct JoinGamePlayers: View {
                 }
 
                 if globalStateManager.showBlurEffect {
-                    // Blurry glass-like background
                     Color.clear
                         .background(VisualEffectView(effect: UIBlurEffect(style: .regular)))
                         .edgesIgnoringSafeArea(.all)

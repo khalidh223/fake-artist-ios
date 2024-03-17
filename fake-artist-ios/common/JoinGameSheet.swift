@@ -67,7 +67,7 @@ struct JoinGameSheet: View {
                     .padding(.bottom)
 
                 if isCheckingValidity {
-                    ProgressView() // Activity indicator
+                    ProgressView()
                 }
 
                 Spacer()
@@ -166,7 +166,6 @@ struct JoinGameSheet: View {
             return
         }
 
-        // If none of the errors are true and checks are completed, navigate
         if isCheckingValidity {
             globalStateManager.setUsername(usernameToSet: username)
             globalStateManager.setGameCode(gameCodeToSet: gameCode)

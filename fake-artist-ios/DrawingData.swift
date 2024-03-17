@@ -1,10 +1,3 @@
-//
-//  DrawingData.swift
-//  fake-artist-ios
-//
-//  Created by Khalid Hussain on 1/29/24.
-//
-
 import Foundation
 struct DrawingData {
     var x: Double
